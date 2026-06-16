@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import DashboardPortfolio from "./Components/DashboardPortfolio";
 import SoftwareResume from "./Components/SoftwareResume";
+import HeroCabinet from "./Components/HeroCabinet";
+import EditBay from "./Components/EditBay";
 
 export default function Home() {
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
@@ -94,165 +96,259 @@ export default function Home() {
   };
 
   return (
-    <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-10">
-      
-      {/* Premium Cyber Terminal Header Split */}
-      <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch border-b border-white/10 pb-8">
+    <div className="flex flex-col min-h-screen bg-[#090d16] text-[#e2e8f0]">
+      {/* Sticky navigation header */}
+      <nav className="sticky top-0 z-40 backdrop-blur-md bg-[#15132b]/80 border-b border-white/10 select-none">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+          <div className="brand flex items-center gap-2.5 font-sans font-black text-white text-base sm:text-lg tracking-wide">
+            <svg className="h-7 w-7 flex-none" viewBox="0 0 40 40" aria-hidden="true">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="#FFB23E" />
+                  <stop offset="1" stopColor="#FF6B57" />
+                </linearGradient>
+              </defs>
+              <circle cx="20" cy="20" r="11" fill="url(#g1)" />
+              <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#7C6CFF" />
+            </svg>
+            <span>Adi Manga</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono">
+            <a href="#library" className="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Games</a>
+            <a href="#editbay" className="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Video</a>
+            <a href="#contact" className="px-4 py-2 rounded-full bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] font-black uppercase tracking-wider transition-all ml-1.5 sm:ml-3">Hire me</a>
+          </div>
+        </div>
+      </nav>
+
+      <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-12">
         
-        {/* Left Profile dossier details: 7 Columns */}
-        <div className="lg:col-span-7 flex flex-col justify-between gap-6">
-          <div className="flex flex-col gap-4">
-            <div className="logo-container">
-              <div className="logo-badge text-white font-black shadow-[0_0_15px_rgba(59,130,246,0.5)]">AM</div>
-              <div>
-                <h1 className="text-3xl font-black tracking-tight text-white uppercase font-sans">
-                  Adi Narayana Manga
-                </h1>
-                <p className="text-xs text-blue-400 font-black tracking-wider uppercase mt-1">
-                  2D Game Developer &middot; Solar2D Specialist &middot; Systems Engineer
-                </p>
+        {/* Premium Cyber Terminal Header Split */}
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch border-b border-white/10 pb-8">
+          
+          {/* Left Profile dossier details: 7 Columns */}
+          <div className="lg:col-span-7 flex flex-col justify-between gap-6">
+            <div className="flex flex-col gap-4">
+              <div className="logo-container flex items-center gap-3">
+                <div className="logo-badge flex items-center justify-center h-10 w-10 bg-blue-600 rounded-xl text-white font-black shadow-[0_0_15px_rgba(59,130,246,0.5)]">AM</div>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white uppercase font-sans">
+                    Adi Narayana Manga
+                  </h1>
+                  <p className="text-[10px] sm:text-xs text-blue-400 font-black tracking-wider uppercase mt-1">
+                    2D Game Developer &middot; Solar2D Specialist &middot; Systems Engineer
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-sm text-slate-300 leading-relaxed max-w-xl">
+                I build high-performance 2D mobile games and playable worlds. Specialist in 
+                <strong className="text-white"> Solar2D (Corona SDK)</strong>, 
+                <strong className="text-white"> Lua scripting</strong>, and custom 
+                <strong className="text-white"> Box2D physics systems</strong>. I prioritize creating tactile game feel, 
+                responsive controls, and smooth 60fps animations.
+              </div>
+            </div>
+            
+            {/* Quick Contact & Status panel */}
+            <div className="flex flex-wrap items-center gap-4 text-xs mt-auto">
+              <div className="flex bg-slate-950/80 border border-white/5 p-1 rounded-xl shadow-inner font-mono text-[10px] sm:text-xs">
+                <a 
+                  href="mailto:mangaaa@mail.uc.edu" 
+                  className="px-3.5 py-2 font-bold uppercase rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+                >
+                  ✉ Email Direct
+                </a>
+                <a 
+                  href="https://github.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3.5 py-2 font-bold uppercase rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+                >
+                  🐙 GitHub
+                </a>
+              </div>
+              
+              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-950/30 border border-emerald-500/20 text-emerald-400 font-bold uppercase rounded-xl text-[10px] sm:text-xs">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+                STATUS: READY FOR OPPORTUNITIES
+              </div>
+            </div>
+          </div>
+
+          {/* Right Interactive Console Terminal: 5 Columns */}
+          <div className="lg:col-span-5 flex flex-col bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] min-h-[260px] relative group">
+            {/* CRT scanline simulation overlay */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.015] to-transparent opacity-60"></div>
+            
+            {/* Terminal Titlebar */}
+            <div className="flex justify-between items-center bg-slate-900 border-b border-white/5 px-4 py-2 text-[10px] font-mono text-slate-400">
+              <span>💻 SOLAR2D SHELL - ADI_MANGA_DOSSIER</span>
+              <div className="flex gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-red-500/80"></span>
+                <span className="h-2 w-2 rounded-full bg-yellow-500/80"></span>
+                <span className="h-2 w-2 rounded-full bg-green-500/80"></span>
               </div>
             </div>
 
-            <div className="text-sm text-slate-300 leading-relaxed max-w-xl">
-              I build high-performance 2D mobile games and playable worlds. Specialist in 
-              <strong className="text-white"> Solar2D (Corona SDK)</strong>, 
-              <strong className="text-white"> Lua scripting</strong>, and custom 
-              <strong className="text-white"> Box2D physics systems</strong>. I prioritize creating tactile game feel, 
-              responsive controls, and smooth 60fps animations.
+            {/* Terminal Logs Output Scrollbar */}
+            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-emerald-400 flex flex-col gap-1.5 max-h-[160px] selection:bg-emerald-800 selection:text-white">
+              {terminalLogs.map((log, index) => (
+                <div key={index} className="whitespace-pre-wrap leading-relaxed">
+                  {log}
+                </div>
+              ))}
+              <div ref={terminalEndRef} />
             </div>
+
+            {/* Preset click shortcuts */}
+            <div className="flex gap-1.5 px-3 py-2 bg-slate-900/50 border-t border-white/5 overflow-x-auto">
+              <button 
+                onClick={() => handleCommand("diagnostics")} 
+                className="px-2 py-0.5 border border-emerald-500/20 hover:border-emerald-400 bg-emerald-950/20 hover:bg-emerald-950/40 text-[9px] font-mono font-bold uppercase rounded text-emerald-400 transition-colors"
+              >
+                [Diagnostics]
+              </button>
+              <button 
+                onClick={() => handleCommand("specs")} 
+                className="px-2 py-0.5 border border-blue-500/20 hover:border-blue-400 bg-blue-950/20 hover:bg-blue-950/40 text-[9px] font-mono font-bold uppercase rounded text-blue-400 transition-colors"
+              >
+                [Specs]
+              </button>
+              <button 
+                onClick={() => handleCommand("secret")} 
+                className="px-2 py-0.5 border border-purple-500/20 hover:border-purple-400 bg-purple-950/20 hover:bg-purple-950/40 text-[9px] font-mono font-bold uppercase rounded text-purple-400 transition-colors"
+              >
+                [Secret Invader]
+              </button>
+              <button 
+                onClick={() => handleCommand("clear")} 
+                className="px-2 py-0.5 border border-slate-700 hover:border-slate-500 bg-slate-800/20 hover:bg-slate-800/40 text-[9px] font-mono font-bold uppercase rounded text-slate-400 transition-colors"
+              >
+                [Clear]
+              </button>
+            </div>
+
+            {/* Interactive Shell Input Form */}
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCommand(terminalInput);
+              }} 
+              className="flex border-t border-white/10 bg-slate-950"
+            >
+              <span className="p-3 pr-1 text-emerald-400 font-mono text-[10px] select-none font-bold">&gt;</span>
+              <input 
+                type="text" 
+                value={terminalInput}
+                onChange={(e) => setTerminalInput(e.target.value)}
+                placeholder="Type command here (e.g. 'help')..."
+                className="flex-1 bg-transparent p-3 pl-1 border-0 focus:outline-none text-[10px] font-mono text-emerald-300 placeholder-slate-600 focus:ring-0"
+              />
+            </form>
           </div>
-          
-          {/* Quick Contact & Status panel */}
-          <div className="flex flex-wrap items-center gap-4 text-xs mt-auto">
-            <div className="flex bg-slate-950/80 border border-white/5 p-1 rounded-xl shadow-inner">
+
+        </header>
+
+        {/* Playable Star Catcher Arcade Centerpiece */}
+        <section className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1 border-l-2 border-[#FFB23E] pl-3">
+            <span className="font-mono text-[10px] text-[#FFB23E] tracking-widest font-black uppercase">
+              🎮 STAR CATCHER CABINET
+            </span>
+            <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+              Interactive Arcade Showcase
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm">
+              Press start to collect falling stars and dodge incoming meteor payloads using mouse coordinates, or watch the autopilot AI run in attract mode.
+            </p>
+          </div>
+          <HeroCabinet />
+        </section>
+
+        {/* Main Dashboard Section */}
+        <section id="library" className="flex flex-col gap-4 border-t border-white/10 pt-10">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl font-black tracking-tight text-white uppercase">
+              2D Worlds & Game Mechanics
+            </h2>
+            <p className="text-sm text-slate-400">
+              Interactive showcase of 16 Solar2D builds, featuring real-time browser game runners, physics parameters tuning, and development logs.
+            </p>
+          </div>
+          <DashboardPortfolio />
+        </section>
+
+        {/* Edit Bay NLE Video Editor Section */}
+        <section id="editbay" className="flex flex-col gap-4 border-t border-white/10 pt-10">
+          <EditBay />
+        </section>
+
+        {/* Career Timeline Section */}
+        <section className="mt-6 border-t border-white/10 pt-10">
+          <SoftwareResume />
+        </section>
+
+        {/* Contact section */}
+        <section id="contact" className="w-full mt-6">
+          <div className="bg-gradient-to-br from-[#241F4B] to-[#1B1838] border border-[#332C5E] rounded-3xl p-8 text-center relative overflow-hidden shadow-xl shadow-black/40">
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(500px_300px_at_50%_0%,rgba(255,178,62,0.1),transparent_70%)]"></div>
+            
+            <span className="block font-mono text-[10px] text-[#7C6CFF] tracking-[0.2em] font-black uppercase mb-4">
+              ★ INSERT COIN ★
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-sans font-black text-white uppercase mb-3 relative">
+              Let's build a game.
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto mb-8 relative">
+              Have a 2D game idea, a prototype that needs polishing, or a Solar2D role to fill? Drop me a line, I read everything.
+            </p>
+
+            <div className="flex flex-wrap gap-4 justify-center relative z-10 text-xs sm:text-sm font-mono">
               <a 
                 href="mailto:mangaaa@mail.uc.edu" 
-                className="px-4 py-2 font-bold uppercase rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+                className="px-5 py-3.5 bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] rounded-xl font-black uppercase transition-all shadow-md"
               >
-                📧 Email Direct
+                ✉ mangaaa@mail.uc.edu
+              </a>
+              <a 
+                href="tel:+15135011280" 
+                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
+              >
+                ☎ +1 513-501-1280
+              </a>
+              <a 
+                href="https://linkedin.com/in/adi-narayana-manga" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
+              >
+                in · LinkedIn
               </a>
               <a 
                 href="https://github.com" 
-                target="_blank"
+                target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 font-bold uppercase rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
               >
-                🐙 GitHub
+                ⌥ GitHub
               </a>
             </div>
-            
-            <div className="flex items-center gap-2 px-3 py-2 bg-emerald-950/30 border border-emerald-500/20 text-emerald-400 font-bold uppercase rounded-xl">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-              HIRE STATUS: READY FOR OPPORTUNITIES
-            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Right Interactive Console Terminal: 5 Columns */}
-        <div className="lg:col-span-5 flex flex-col bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] min-h-[260px] relative group">
-          {/* CRT scanline simulation overlay */}
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.015] to-transparent opacity-60"></div>
-          
-          {/* Terminal Titlebar */}
-          <div className="flex justify-between items-center bg-slate-900 border-b border-white/5 px-4 py-2 text-[10px] font-mono text-slate-400">
-            <span>💻 SOLAR2D SHELL - ADI_MANGA_DOSSIER</span>
-            <div className="flex gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-red-500/80"></span>
-              <span className="h-2 w-2 rounded-full bg-yellow-500/80"></span>
-              <span className="h-2 w-2 rounded-full bg-green-500/80"></span>
-            </div>
+        {/* Footer Info */}
+        <footer className="border-t border-white/5 pt-6 pb-12 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+          <div>
+            Hand-built with Next.js & HTML5 Canvas. Adi Narayana Manga, 2024 to 2026.
           </div>
-
-          {/* Terminal Logs Output Scrollbar */}
-          <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-emerald-400 flex flex-col gap-1.5 max-h-[160px] selection:bg-emerald-800 selection:text-white">
-            {terminalLogs.map((log, index) => (
-              <div key={index} className="whitespace-pre-wrap leading-relaxed">
-                {log}
-              </div>
-            ))}
-            <div ref={terminalEndRef} />
+          <div className="flex gap-4 font-semibold uppercase tracking-wider font-mono">
+            <span>Engine: Solar2D (Lua)</span>
+            <span>Deployments: iOS / Android / WebGL</span>
           </div>
+        </footer>
 
-          {/* Preset click shortcuts */}
-          <div className="flex gap-1.5 px-3 py-2 bg-slate-900/50 border-t border-white/5 overflow-x-auto">
-            <button 
-              onClick={() => handleCommand("diagnostics")} 
-              className="px-2 py-0.5 border border-emerald-500/20 hover:border-emerald-400 bg-emerald-950/20 hover:bg-emerald-950/40 text-[9px] font-mono font-bold uppercase rounded text-emerald-400 transition-colors"
-            >
-              [Diagnostics]
-            </button>
-            <button 
-              onClick={() => handleCommand("specs")} 
-              className="px-2 py-0.5 border border-blue-500/20 hover:border-blue-400 bg-blue-950/20 hover:bg-blue-950/40 text-[9px] font-mono font-bold uppercase rounded text-blue-400 transition-colors"
-            >
-              [Specs]
-            </button>
-            <button 
-              onClick={() => handleCommand("secret")} 
-              className="px-2 py-0.5 border border-purple-500/20 hover:border-purple-400 bg-purple-950/20 hover:bg-purple-950/40 text-[9px] font-mono font-bold uppercase rounded text-purple-400 transition-colors"
-            >
-              [Secret Invader]
-            </button>
-            <button 
-              onClick={() => handleCommand("clear")} 
-              className="px-2 py-0.5 border border-slate-700 hover:border-slate-500 bg-slate-800/20 hover:bg-slate-800/40 text-[9px] font-mono font-bold uppercase rounded text-slate-400 transition-colors"
-            >
-              [Clear]
-            </button>
-          </div>
-
-          {/* Interactive Shell Input Form */}
-          <form 
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleCommand(terminalInput);
-            }} 
-            className="flex border-t border-white/10 bg-slate-950"
-          >
-            <span className="p-3 pr-1 text-emerald-400 font-mono text-[10px] select-none font-bold">&gt;</span>
-            <input 
-              type="text" 
-              value={terminalInput}
-              onChange={(e) => setTerminalInput(e.target.value)}
-              placeholder="Type command here (e.g. 'help')..."
-              className="flex-1 bg-transparent p-3 pl-1 border-0 focus:outline-none text-[10px] font-mono text-emerald-300 placeholder-slate-600 focus:ring-0"
-            />
-          </form>
-
-        </div>
-
-      </header>
-
-      {/* Main Dashboard Section */}
-      <section className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-2xl font-black tracking-tight text-white uppercase">
-            2D Worlds & Game Mechanics
-          </h2>
-          <p className="text-sm text-slate-400">
-            Interactive showcase of 16 Solar2D builds, featuring real-time browser game runners, physics parameters tuning, and development logs.
-          </p>
-        </div>
-        <DashboardPortfolio />
-      </section>
-
-      {/* Career Timeline Section */}
-      <section className="mt-6">
-        <SoftwareResume />
-      </section>
-
-      {/* Footer Info */}
-      <footer className="border-t border-white/5 pt-6 pb-12 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
-        <div>
-          Hand-built with Next.js & HTML5 Canvas. Adi Narayana Manga, 2024 to 2026.
-        </div>
-        <div className="flex gap-4 font-semibold uppercase tracking-wider font-mono">
-          <span>Engine: Solar2D (Lua)</span>
-          <span>Deployments: iOS / Android / WebGL</span>
-        </div>
-      </footer>
-
-    </main>
+      </main>
+    </div>
   );
 }
