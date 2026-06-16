@@ -4,14 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 
 // Color constants matching the Solar2D theme
 const C = {
-  bg0: '#15132B',
-  bg1: '#1B1838',
-  bg2: '#241F4B',
-  line: '#332C5E',
-  sun: '#FFB23E',
+  bg0: '#060608',
+  bg1: '#0d0d10',
+  bg2: '#15151b',
+  line: '#222227',
+  sun: '#E5A93B',
   coral: '#FF6B57',
-  moon: '#7C6CFF',
-  starc: '#9FE8FF',
+  moon: '#A47E3C',
+  starc: '#FFB23E',
   green: '#5BE2A0',
   pink: '#FF8FD0',
   text: '#EDEBFF',
@@ -348,11 +348,11 @@ function ClipPreview({ clip }: { clip: ClipItem }) {
   return (
     <div
       ref={containerRef}
-      className="clip flex flex-col bg-[#1B1838]/80 border border-[#332C5E] rounded-2xl overflow-hidden hover:border-[#FF6B57] hover:shadow-[0_24px_46px_-30px_rgba(255,107,87,0.5)] transition-all duration-300 group"
+      className="clip flex flex-col bg-[#0d0d10]/80 border border-white/5 rounded-2xl overflow-hidden hover:border-[#E5A93B] hover:shadow-[0_24px_46px_-30px_rgba(229,169,59,0.15)] transition-all duration-300 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="cscreen relative aspect-video bg-[#08070f] overflow-hidden border-b border-[#332C5E]">
+      <div className="cscreen relative aspect-video bg-[#08070f] overflow-hidden border-b border-white/5">
         <canvas ref={canvasRef} className="block w-full h-full" />
         
         {/* Play HUD Overlay */}
@@ -366,7 +366,7 @@ function ClipPreview({ clip }: { clip: ClipItem }) {
 
       <div className="cinfo p-4 flex flex-col flex-1">
         <div className="ctags flex items-center gap-2 mb-2">
-          <span className="ctag font-mono text-[9px] uppercase tracking-wider text-[#FFB23E] bg-[#FFB23E]/5 border border-[#FFB23E]/15 px-2 py-0.5 rounded">
+          <span className="ctag font-mono text-[9px] uppercase tracking-wider text-[#E5A93B] bg-[#E5A93B]/5 border border-[#E5A93B]/15 px-2 py-0.5 rounded">
             {clip.tag}
           </span>
           <span className="font-mono text-[9px] text-[#A29DC9] ml-auto">
@@ -377,10 +377,10 @@ function ClipPreview({ clip }: { clip: ClipItem }) {
         <h3 className="text-white font-bold text-sm tracking-tight mb-1">{clip.title}</h3>
         <p className="text-slate-400 text-xs leading-relaxed flex-1">{clip.description}</p>
 
-        <div className="cfoot flex items-center gap-2 pt-3 mt-3 border-t border-[#332C5E] text-[10px] font-mono text-slate-500">
+        <div className="cfoot flex items-center gap-2 pt-3 mt-3 border-t border-white/5 text-[10px] font-mono text-slate-500">
           <span>Software:</span>
           <b className="text-slate-300">Lightworks Pro</b>
-          <span className="skillpill ml-auto text-[#9FE8FF]">{clip.skills}</span>
+          <span className="skillpill ml-auto text-[#E5A93B]">{clip.skills}</span>
         </div>
       </div>
     </div>
@@ -842,7 +842,7 @@ export default function EditBay() {
   return (
     <div ref={containerRef} className="flex flex-col gap-6 w-full">
       <div className="flex flex-col gap-1.5">
-        <span className="font-mono text-[9px] sm:text-[10px] text-[#7C6CFF] font-black uppercase tracking-widest">
+        <span className="font-mono text-[9px] sm:text-[10px] text-[#E5A93B] font-black uppercase tracking-widest">
           ▶ NLE STAGE
         </span>
         <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white leading-none">
@@ -854,15 +854,15 @@ export default function EditBay() {
       </div>
 
       {/* Editor Frame Layout */}
-      <div className="nle flex flex-col bg-[#0c0a18] border border-[#332C5E] rounded-3xl overflow-hidden shadow-2xl shadow-black/70">
+      <div className="nle flex flex-col bg-[#070709] border border-white/5 rounded-3xl overflow-hidden shadow-2xl shadow-black/70">
         
         {/* Program monitor */}
-        <div className="monitor relative aspect-[16/7.4] bg-black select-none border-b border-[#332C5E]">
+        <div className="monitor relative aspect-[16/7.4] bg-black select-none border-b border-white/5">
           <canvas ref={monitorCanvasRef} className="block w-full h-full" />
         </div>
 
         {/* Transport controls bar */}
-        <div className="barstrip flex items-center justify-between px-4 py-2.5 bg-[#15121f] font-mono text-[10px] sm:text-xs text-slate-400 select-none">
+        <div className="barstrip flex items-center justify-between px-4 py-2.5 bg-[#0d0d10] border-t border-b border-white/5 font-mono text-[10px] sm:text-xs text-slate-400 select-none">
           <div className="flex items-center gap-3">
             <span className="text-slate-200 font-bold uppercase tracking-wider">PROGRAM MONITOR</span>
             <span className="text-slate-500">·</span>
@@ -876,13 +876,13 @@ export default function EditBay() {
           </div>
 
           {/* Timecode */}
-          <span className="text-[#9FE8FF] font-mono font-bold tracking-wider text-xs sm:text-sm bg-black/40 px-3 py-1 rounded border border-white/5 shadow-inner">
+          <span className="text-[#E5A93B] font-mono font-bold tracking-wider text-xs sm:text-sm bg-black/40 px-3 py-1 rounded border border-[#E5A93B]/15 shadow-inner">
             {getFormattedTimecode(currentFrame)}
           </span>
         </div>
 
         {/* Playback Transport Buttons Bar */}
-        <div className="flex items-center justify-center gap-4 py-2 bg-[#0d0a17] border-b border-[#332C5E]">
+        <div className="flex items-center justify-center gap-4 py-2 bg-[#070709] border-b border-white/5">
           <button
             onClick={stopPlayback}
             className="p-2 bg-slate-900 border border-white/5 hover:border-slate-600 rounded-lg text-slate-400 hover:text-white transition-all text-xs flex items-center gap-1.5 uppercase font-mono"
@@ -894,8 +894,8 @@ export default function EditBay() {
             onClick={togglePlayback}
             className={`px-5 py-2 rounded-lg font-bold transition-all text-xs flex items-center gap-1.5 uppercase font-mono ${
               isPlaying
-                ? "bg-[#FF6B57] text-[#1a1330] shadow-[0_0_15px_rgba(255,107,87,0.3)]"
-                : "bg-[#FFB23E] text-[#1a1330] shadow-[0_0_15px_rgba(255,178,62,0.3)]"
+                ? "bg-[#FF6B57] text-[#050507] shadow-[0_0_15px_rgba(255,107,87,0.2)]"
+                : "bg-[#E5A93B] text-[#050507] shadow-[0_0_15px_rgba(229,169,59,0.2)]"
             }`}
             aria-label={isPlaying ? "Pause playback" : "Play video"}
           >
@@ -904,7 +904,7 @@ export default function EditBay() {
         </div>
 
         {/* Timeline Canvas */}
-        <div className="timeline relative height-[148px] bg-[#100e1a]">
+        <div className="timeline relative height-[148px] bg-[#0d0d10]">
           <canvas
             ref={timelineCanvasRef}
             onMouseDown={handleMouseDown}
@@ -921,7 +921,7 @@ export default function EditBay() {
       {/* Reel grid clips container */}
       <div className="flex flex-col gap-2 mt-4">
         <h4 className="text-white font-bold text-sm tracking-tight uppercase flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-[#FFB23E]"></span>
+          <span className="h-2 w-2 rounded-full bg-[#E5A93B]"></span>
           Looping Clip Previews
         </h4>
         

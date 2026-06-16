@@ -4,13 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 
 // Colors from Solar2D design system
 const C = {
-  bg0: '#15132B',
-  bg1: '#1B1838',
-  bg2: '#241F4B',
-  sun: '#FFB23E',
+  bg0: '#060608',
+  bg1: '#0d0d10',
+  bg2: '#15151b',
+  sun: '#E5A93B',
   coral: '#FF6B57',
-  moon: '#7C6CFF',
-  star: '#9FE8FF',
+  moon: '#A47E3C',
+  star: '#FFB23E',
   green: '#5BE2A0',
   pink: '#FF8FD0',
   text: '#EDEBFF',
@@ -272,7 +272,7 @@ export default function HeroCabinet() {
       particles.current.step(dt);
 
       // Clear & repaint background
-      bgGradient(ctx, width, height, '#1a1640', '#0d0b22');
+      bgGradient(ctx, width, height, '#121218', '#070709');
       drawStarfieldLocal(ctx, starfieldRef.current, width, height, t.current, 18 * dt * 60);
 
       // Shake effect
@@ -389,10 +389,10 @@ export default function HeroCabinet() {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div className="cabinet relative rounded-3xl p-3 sm:p-4 bg-gradient-to-br from-[#26214f] to-[#191635] border border-[#332c5e] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.05)]">
+      <div className="cabinet relative rounded-3xl p-3 sm:p-4 bg-gradient-to-br from-[#121216] to-[#0a0a0d] border border-white/5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.02)]">
         
         {/* Playable screen frame */}
-        <div className="screen relative rounded-xl overflow-hidden aspect-video bg-[#0c0a1d] border border-[#0a0817] shadow-inner select-none">
+        <div className="screen relative rounded-xl overflow-hidden aspect-video bg-[#070709] border border-white/5 shadow-inner select-none">
           
           <canvas
             ref={canvasRef}
@@ -410,8 +410,8 @@ export default function HeroCabinet() {
           <div className="vig absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_80px_rgba(8,6,18,0.7)]"></div>
 
           {/* HUD Score */}
-          <div className="hud absolute top-3 left-4 z-20 font-mono text-[10px] sm:text-xs text-[#9FE8FF] drop-shadow-[0_2px_0_rgba(0,0,0,0.8)] tracking-wider font-bold">
-            <span className="text-[#FFB23E] mr-1.5">SCORE</span>
+          <div className="hud absolute top-3 left-4 z-20 font-mono text-[10px] sm:text-xs text-[#E5A93B] drop-shadow-[0_2px_0_rgba(0,0,0,0.8)] tracking-wider font-bold">
+            <span className="text-[#A47E3C] mr-1.5">SCORE</span>
             <span>{String(score).padStart(6, "0")}</span>
           </div>
 
@@ -424,7 +424,7 @@ export default function HeroCabinet() {
           {isAttractMode && (
             <button
               onClick={startManualPlay}
-              className="startbtn absolute z-30 left-1/2 bottom-5 sm:bottom-6 -translate-x-1/2 px-5 py-3 sm:px-6 sm:py-3.5 rounded-lg bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer border-0 shadow-[0_6px_0_#b9781f,0_14px_24px_rgba(0,0,0,0.6)] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[0_2px_0_#b9781f] transition-all animate-pulse"
+              className="startbtn absolute z-30 left-1/2 bottom-5 sm:bottom-6 -translate-x-1/2 px-5 py-3 sm:px-6 sm:py-3.5 rounded-lg bg-[#E5A93B] hover:bg-[#ffc266] text-[#050507] font-black uppercase text-[10px] sm:text-xs tracking-wider cursor-pointer border-0 shadow-[0_6px_0_#A47E3C,0_14px_24px_rgba(0,0,0,0.6)] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[0_2px_0_#A47E3C] transition-all animate-pulse"
             >
               ▶ PRESS START
             </button>
@@ -436,19 +436,19 @@ export default function HeroCabinet() {
 
       {/* Hero Stats Row directly coupled */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-        <div className="flex flex-col bg-[#1B1838]/60 border border-[#332c5e] rounded-2xl p-4 shadow-sm hover:border-[#7C6CFF]/30 transition-colors">
-          <span className="text-[#FFB23E] text-2xl font-black font-sans leading-none">16</span>
+        <div className="flex flex-col bg-[#0d0d10]/60 border border-white/5 rounded-2xl p-4 shadow-sm hover:border-[#E5A93B]/20 transition-colors">
+          <span className="text-[#E5A93B] text-2xl font-black font-sans leading-none">16</span>
           <span className="text-slate-400 text-[10px] font-mono uppercase tracking-wider mt-1.5">game builds</span>
         </div>
-        <div className="flex flex-col bg-[#1B1838]/60 border border-[#332c5e] rounded-2xl p-4 shadow-sm hover:border-[#7C6CFF]/30 transition-colors">
-          <span className="text-[#7C6CFF] text-2xl font-black font-sans leading-none">2024→</span>
+        <div className="flex flex-col bg-[#0d0d10]/60 border border-white/5 rounded-2xl p-4 shadow-sm hover:border-[#E5A93B]/20 transition-colors">
+          <span className="text-[#A47E3C] text-2xl font-black font-sans leading-none">2024→</span>
           <span className="text-slate-400 text-[10px] font-mono uppercase tracking-wider mt-1.5">now &amp; counting</span>
         </div>
-        <div className="flex flex-col bg-[#1B1838]/60 border border-[#332c5e] rounded-2xl p-4 shadow-sm hover:border-[#7C6CFF]/30 transition-colors">
+        <div className="flex flex-col bg-[#0d0d10]/60 border border-white/5 rounded-2xl p-4 shadow-sm hover:border-[#E5A93B]/20 transition-colors">
           <span className="text-[#FF6B57] text-2xl font-black font-sans leading-none">Lua</span>
           <span className="text-slate-400 text-[10px] font-mono uppercase tracking-wider mt-1.5">core language</span>
         </div>
-        <div className="flex flex-col bg-[#1B1838]/60 border border-[#332c5e] rounded-2xl p-4 shadow-sm hover:border-[#7C6CFF]/30 transition-colors">
+        <div className="flex flex-col bg-[#0d0d10]/60 border border-white/5 rounded-2xl p-4 shadow-sm hover:border-[#E5A93B]/20 transition-colors">
           <span className="text-[#5BE2A0] text-2xl font-black font-sans leading-none">iOS/Android</span>
           <span className="text-slate-400 text-[10px] font-mono uppercase tracking-wider mt-1.5">cross-platform</span>
         </div>
