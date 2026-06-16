@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import DashboardPortfolio from "./Components/DashboardPortfolio";
-import SoftwareResume from "./Components/SoftwareResume";
-import HeroCabinet from "./Components/HeroCabinet";
-import EditBay from "./Components/EditBay";
+import DashboardPortfolio from "../Components/DashboardPortfolio";
+import SoftwareResume from "../Components/SoftwareResume";
 
-export default function Home() {
+export default function DashboardPage() {
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
     "[SYSTEM] Initiating Solar2D workspace boot sequence...",
     "[SYSTEM] Loading Box2D physics solver library...",
@@ -98,7 +96,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#090d16] text-[#e2e8f0]">
       {/* Sticky navigation header */}
-      <nav className="sticky top-0 z-40 backdrop-blur-md bg-[#15132b]/80 border-b border-white/10 select-none">
+      <nav className="sticky top-0 z-40 backdrop-blur-md bg-[#15132b]/80 border-b border-white/10 select-none mb-6">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
           <div className="brand flex items-center gap-2.5 font-sans font-black text-white text-base sm:text-lg tracking-wide">
             <svg className="h-7 w-7 flex-none" viewBox="0 0 40 40" aria-hidden="true">
@@ -111,18 +109,17 @@ export default function Home() {
               <circle cx="20" cy="20" r="11" fill="url(#g1)" />
               <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#7C6CFF" />
             </svg>
-            <span>Adi Manga</span>
+            <a href="../" className="hover:text-[#FFB23E] transition-colors">Adi Manga</a>
           </div>
-          <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono">
-            <a href="#library" className="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Games</a>
-            <a href="#editbay" className="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Video</a>
-            <a href="dashboard" className="px-3 py-1.5 rounded-full text-[#9FE8FF] hover:text-white hover:bg-white/5 transition-all uppercase font-bold border border-[#9FE8FF]/20 bg-[#9FE8FF]/5">Dashboard</a>
-            <a href="#contact" className="px-4 py-2 rounded-full bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] font-black uppercase tracking-wider transition-all ml-1.5 sm:ml-3">Hire me</a>
+          <div className="flex items-center gap-3 text-xs font-mono">
+            <a href="../" className="px-4 py-2 rounded-full bg-[#FF6B57] hover:bg-[#ff8f80] text-[#1a1330] font-black uppercase tracking-wider transition-all">
+              ◀ BACK TO PORTFOLIO
+            </a>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-12">
+      <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-10">
         
         {/* Premium Cyber Terminal Header Split */}
         <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch border-b border-white/10 pb-8">
@@ -251,24 +248,8 @@ export default function Home() {
 
         </header>
 
-        {/* Playable Star Catcher Arcade Centerpiece */}
-        <section className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1 border-l-2 border-[#FFB23E] pl-3">
-            <span className="font-mono text-[10px] text-[#FFB23E] tracking-widest font-black uppercase">
-              🎮 STAR CATCHER CABINET
-            </span>
-            <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-              Interactive Arcade Showcase
-            </h2>
-            <p className="text-slate-400 text-xs sm:text-sm">
-              Press start to collect falling stars and dodge incoming meteor payloads using mouse coordinates, or watch the autopilot AI run in attract mode.
-            </p>
-          </div>
-          <HeroCabinet />
-        </section>
-
         {/* Main Dashboard Section */}
-        <section id="library" className="flex flex-col gap-4 border-t border-white/10 pt-10">
+        <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <h2 className="text-2xl font-black tracking-tight text-white uppercase">
               2D Worlds & Game Mechanics
@@ -280,62 +261,9 @@ export default function Home() {
           <DashboardPortfolio />
         </section>
 
-        {/* Edit Bay NLE Video Editor Section */}
-        <section id="editbay" className="flex flex-col gap-4 border-t border-white/10 pt-10">
-          <EditBay />
-        </section>
-
         {/* Career Timeline Section */}
-        <section className="mt-6 border-t border-white/10 pt-10">
+        <section className="mt-6">
           <SoftwareResume />
-        </section>
-
-        {/* Contact section */}
-        <section id="contact" className="w-full mt-6">
-          <div className="bg-gradient-to-br from-[#241F4B] to-[#1B1838] border border-[#332C5E] rounded-3xl p-8 text-center relative overflow-hidden shadow-xl shadow-black/40">
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(500px_300px_at_50%_0%,rgba(255,178,62,0.1),transparent_70%)]"></div>
-            
-            <span className="block font-mono text-[10px] text-[#7C6CFF] tracking-[0.2em] font-black uppercase mb-4">
-              ★ INSERT COIN ★
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-sans font-black text-white uppercase mb-3 relative">
-              Let's build a game.
-            </h2>
-            <p className="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto mb-8 relative">
-              Have a 2D game idea, a prototype that needs polishing, or a Solar2D role to fill? Drop me a line, I read everything.
-            </p>
-
-            <div className="flex flex-wrap gap-4 justify-center relative z-10 text-xs sm:text-sm font-mono">
-              <a 
-                href="mailto:mangaaa@mail.uc.edu" 
-                className="px-5 py-3.5 bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] rounded-xl font-black uppercase transition-all shadow-md"
-              >
-                ✉ mangaaa@mail.uc.edu
-              </a>
-              <a 
-                href="tel:+15135011280" 
-                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
-              >
-                ☎ +1 513-501-1280
-              </a>
-              <a 
-                href="https://linkedin.com/in/adi-narayana-manga" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
-              >
-                in · LinkedIn
-              </a>
-              <a 
-                href="https://github.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
-              >
-                ⌥ GitHub
-              </a>
-            </div>
-          </div>
         </section>
 
         {/* Footer Info */}
