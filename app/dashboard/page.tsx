@@ -109,7 +109,7 @@ export default function DashboardPage() {
               <circle cx="20" cy="20" r="11" fill="url(#g1)" />
               <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#7C6CFF" />
             </svg>
-            <a href="../" className="hover:text-[#FFB23E] transition-colors">Adi Manga</a>
+            <a href="../" className="hover:text-[#FFB23E] transition-colors">2D Game Dev</a>
           </div>
           <div className="flex items-center gap-3 text-xs font-mono">
             <a href="../" className="px-4 py-2 rounded-full bg-[#FF6B57] hover:bg-[#ff8f80] text-[#1a1330] font-black uppercase tracking-wider transition-all">

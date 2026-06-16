@@ -111,7 +111,7 @@ export default function Home() {
               <circle cx="20" cy="20" r="11" fill="url(#g1)" />
               <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#7C6CFF" />
             </svg>
-            <span>Adi Manga</span>
+            <span>2D Game Dev</span>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono">
             <a href="#library" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Games</a>
@@ -278,7 +278,7 @@ export default function Home() {
                   A
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white tracking-tight">Adi Narayana Manga</h3>
+                  <h3 className="text-xl font-bold text-white tracking-tight">Developer Profile</h3>
                   <p className="text-xs text-[#FFB23E] font-mono tracking-wider mt-1 uppercase">2D Game Developer · Solar2D Specialist</p>
                 </div>
               </div>
