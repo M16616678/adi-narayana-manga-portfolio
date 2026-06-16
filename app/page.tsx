@@ -111,7 +111,10 @@ export default function Home() {
               <circle cx="20" cy="20" r="11" fill="url(#g1)" />
               <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#7C6CFF" />
             </svg>
-            <span>2D Game Dev</span>
+            <span className="tracking-wider font-extrabold uppercase text-sm sm:text-base">
+              <span className="hidden sm:inline">Adi Narayana Manga</span>
+              <span className="inline sm:hidden">Adi Manga</span>
+            </span>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono">
             <a href="#library" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Games</a>
