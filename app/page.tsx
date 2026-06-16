@@ -547,7 +547,7 @@ export default function Home() {
                 ☎ +1 513-501-1280
               </a>
               <a 
-                href="https://linkedin.com/in/adi-narayana-manga" 
+                href="https://www.linkedin.com/in/adi-narayana-manga/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="px-5 py-3.5 bg-[#050507] border border-white/10 text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#E5A93B] transition-all"
