@@ -99,7 +99,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-[#090d16] text-[#e2e8f0]">
       {/* Sticky navigation header */}
       <nav className="sticky top-0 z-40 backdrop-blur-md bg-[#15132b]/80 border-b border-white/10 select-none">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           <div className="brand flex items-center gap-2.5 font-sans font-black text-white text-base sm:text-lg tracking-wide">
             <svg className="h-7 w-7 flex-none" viewBox="0 0 40 40" aria-hidden="true">
               <defs>
@@ -114,15 +114,17 @@ export default function Home() {
             <span>Adi Manga</span>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono">
-            <a href="#library" className="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Games</a>
-            <a href="#editbay" className="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Video</a>
+            <a href="#library" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Games</a>
+            <a href="#journey" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Journey</a>
+            <a href="#engine" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Engine</a>
+            <a href="#editbay" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Video</a>
             <a href="dashboard" className="px-3 py-1.5 rounded-full text-[#9FE8FF] hover:text-white hover:bg-white/5 transition-all uppercase font-bold border border-[#9FE8FF]/20 bg-[#9FE8FF]/5">Dashboard</a>
             <a href="#contact" className="px-4 py-2 rounded-full bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] font-black uppercase tracking-wider transition-all ml-1.5 sm:ml-3">Hire me</a>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-12">
+      <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-16">
         
         {/* Premium Cyber Terminal Header Split */}
         <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch border-b border-white/10 pb-8">
@@ -143,11 +145,7 @@ export default function Home() {
               </div>
 
               <div className="text-sm text-slate-300 leading-relaxed max-w-xl">
-                I build high-performance 2D mobile games and playable worlds. Specialist in 
-                <strong className="text-white"> Solar2D (Corona SDK)</strong>, 
-                <strong className="text-white"> Lua scripting</strong>, and custom 
-                <strong className="text-white"> Box2D physics systems</strong>. I prioritize creating tactile game feel, 
-                responsive controls, and smooth 60fps animations.
+                I make small mobile games with the <strong className="text-white">Solar2D</strong> engine and <strong className="text-white">Lua</strong>. Everything on this page is live and running in your browser, so go ahead and <strong className="text-white">tap a screen to play.</strong>
               </div>
             </div>
             
@@ -267,8 +265,110 @@ export default function Home() {
           <HeroCabinet />
         </section>
 
-        {/* Main Dashboard Section */}
-        <section id="library" className="flex flex-col gap-4 border-t border-white/10 pt-10">
+        {/* ABOUT / PLAYER CARD SECTION */}
+        <section id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-t border-white/10 pt-12 items-stretch">
+          
+          {/* Left: Player Card (7 cols) */}
+          <div className="lg:col-span-7 flex flex-col bg-gradient-to-br from-[#241F4B]/60 to-[#1B1838]/60 border border-[#332C5E] rounded-3xl p-6 relative overflow-hidden backdrop-blur-md justify-between shadow-lg">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(circle,rgba(255,178,62,0.12)_0%,transparent_70%)] pointer-events-none"></div>
+            
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="avatar h-16 w-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#7C6CFF] to-[#FF6B57] text-[#13102a] text-2xl font-black font-sans shadow-md">
+                  A
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white tracking-tight">Adi Narayana Manga</h3>
+                  <p className="text-xs text-[#FFB23E] font-mono tracking-wider mt-1 uppercase">2D Game Developer · Solar2D Specialist</p>
+                </div>
+              </div>
+
+              <p className="text-sm text-slate-300 leading-relaxed mb-8">
+                I started learning Solar2D back in <b>2024</b> and haven't really stopped since. Most of what I make is small stuff: arcade shooters, match puzzles, endless runners, a couple of physics toys. The thing I keep chasing is <b>good game feel</b>, controls that respond right away and still hit 60fps on a cheap phone. Lua makes prototyping quick, and Solar2D's physics, composer and widget libraries are what actually get things finished.
+              </p>
+            </div>
+
+            {/* Skill Capability Bars */}
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between text-xs font-mono text-slate-400">
+                  <span>Solar2D Engine</span>
+                  <span className="text-[#FFB23E]">Expert (94%)</span>
+                </div>
+                <div className="h-2 bg-[#15122e] border border-[#332C5E] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#FFB23E] to-[#FF6B57] rounded-full" style={{ width: "94%" }}></div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between text-xs font-mono text-slate-400">
+                  <span>Lua Scripting</span>
+                  <span className="text-[#FFB23E]">Advanced (90%)</span>
+                </div>
+                <div className="h-2 bg-[#15122e] border border-[#332C5E] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#FFB23E] to-[#FF6B57] rounded-full" style={{ width: "90%" }}></div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between text-xs font-mono text-slate-400">
+                  <span>Game Physics & Feel</span>
+                  <span className="text-[#FFB23E]">Advanced (86%)</span>
+                </div>
+                <div className="h-2 bg-[#15122e] border border-[#332C5E] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#FFB23E] to-[#FF6B57] rounded-full" style={{ width: "86%" }}></div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between text-xs font-mono text-slate-400">
+                  <span>Sprite & UI Design</span>
+                  <span className="text-[#FFB23E]">Strong (80%)</span>
+                </div>
+                <div className="h-2 bg-[#15122e] border border-[#332C5E] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#FFB23E] to-[#FF6B57] rounded-full" style={{ width: "80%" }}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Code Block & Day Job Note (5 cols) */}
+          <div className="lg:col-span-5 flex flex-col gap-6">
+            {/* Syntax Highlighted Lua Box */}
+            <div className="code bg-[#0e0c22] border border-[#332C5E] rounded-3xl p-5 overflow-hidden shadow-inner">
+              <div className="cbar flex gap-1.5 mb-4">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#FF6B57]"></span>
+                <span className="h-2.5 w-2.5 rounded-full bg-[#FFB23E]"></span>
+                <span className="h-2.5 w-2.5 rounded-full bg-[#5BE2A0]"></span>
+              </div>
+              <pre className="text-[11px] font-mono leading-relaxed text-[#c9c4ef] overflow-x-auto select-none">
+                <span className="text-slate-500">-- Solar2D · main.lua</span><br/>
+                <span className="text-[#7C6CFF]">local</span> physics = <span className="text-[#FFB23E]">require</span>(<span className="text-[#5BE2A0]">"physics"</span>)<br/>
+                physics.<span className="text-[#FFB23E]">start</span>()<br/><br/>
+                <span className="text-[#7C6CFF]">local</span> hero = display.<span className="text-[#FFB23E]">newImageRect</span>(<span className="text-[#5BE2A0]">"ship.png"</span>, <span className="text-[#FF6B57]">64</span>, <span className="text-[#FF6B57]">64</span>)<br/>
+                hero.x, hero.y = display.contentCenterX, <span className="text-[#FF6B57]">480</span><br/>
+                physics.<span className="text-[#FFB23E]">addBody</span>(hero, <span className="text-[#5BE2A0]">"dynamic"</span>, &#123; radius = <span className="text-[#FF6B57]">28</span> &#125;)<br/><br/>
+                <span className="text-[#7C6CFF]">local function</span> <span className="text-[#FFB23E]">onTap</span>(e)<br/>
+                &nbsp;&nbsp;hero:<span className="text-[#FFB23E]">applyLinearImpulse</span>(<span className="text-[#FF6B57]">0</span>, <span className="text-[#FF6B57]">-0.6</span>, hero.x, hero.y)<br/>
+                <span className="text-[#7C6CFF]">end</span><br/>
+                Runtime:<span className="text-[#FFB23E]">addEventListener</span>(<span className="text-[#5BE2A0]">"tap"</span>, onTap)
+              </pre>
+            </div>
+
+            {/* Day Job Note */}
+            <div className="note bg-[#1B1838] border border-[#332C5E] rounded-3xl p-5 shadow-sm flex-1 flex flex-col justify-center">
+              <h4 className="text-white font-bold text-sm tracking-tight mb-2 flex items-center gap-2">
+                <span>🌗</span> Beyond games, the day job
+              </h4>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                I also come from a software background: an <b>MS in Information Technology from the University of Cincinnati (2024 to 2025, 3.97 GPA)</b>, plus time as a software engineer at TCS, a full-stack intern at Innovision LLC, and an AI evaluator. That work taught me how to keep code organized, which honestly helps a lot with the games. But games are where I'd rather be.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Main Dashboard Section (Game Library) */}
+        <section id="library" className="flex flex-col gap-4 border-t border-white/10 pt-12">
           <div className="flex flex-col gap-1">
             <h2 className="text-2xl font-black tracking-tight text-white uppercase">
               2D Worlds & Game Mechanics
@@ -280,13 +380,110 @@ export default function Home() {
           <DashboardPortfolio />
         </section>
 
+        {/* JOURNEY TIMELINE SECTION */}
+        <section id="journey" className="flex flex-col gap-6 border-t border-white/10 pt-12">
+          <div className="flex flex-col gap-1 border-l-2 border-[#7C6CFF] pl-3">
+            <span className="font-mono text-[10px] text-[#7C6CFF] tracking-widest font-black uppercase">
+              ◷ 2024 → PRESENT
+            </span>
+            <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+              The Solar2D Journey
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm">
+              How a software engineer ended up making 2D games, one prototype at a time.
+            </p>
+          </div>
+
+          <div className="relative border-l-2 border-dashed border-[#332C5E] ml-4 mt-6 pl-8 flex flex-col gap-8">
+            {/* Timeline Node 1 */}
+            <div className="relative">
+              <span className="absolute -left-[41px] top-1.5 h-4 w-4 rounded-full bg-[#090d16] border-[3px] border-[#FFB23E] shadow-[0_0_0_4px_rgba(255,178,62,0.12)]"></span>
+              <span className="font-mono text-[10px] font-black uppercase tracking-wider text-[#FFB23E]">2024 · EARLY</span>
+              <h4 className="text-white font-bold text-sm tracking-tight mt-1">First builds in Solar2D</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mt-1.5 max-w-2xl">
+                Picked up Lua and Solar2D mostly because I wanted to make a game. The first two that actually worked were Star Catcher and Astro Blaster. That's where I figured out sprite sheets, the display library and the runtime loop.
+              </p>
+            </div>
+
+            {/* Timeline Node 2 */}
+            <div className="relative">
+              <span className="absolute -left-[41px] top-1.5 h-4 w-4 rounded-full bg-[#090d16] border-[3px] border-[#7C6CFF] shadow-[0_0_0_4px_rgba(124,108,255,0.14)]"></span>
+              <span className="font-mono text-[10px] font-black uppercase tracking-wider text-[#7C6CFF]">2024 · LATE</span>
+              <h4 className="text-white font-bold text-sm tracking-tight mt-1">Physics &amp; juice</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mt-1.5 max-w-2xl">
+                Doved into Box2D via Solar2D's physics engine. Built Brick Breaker, Lunar Lander and a slingshot demo, obsessing over particles, screen shake and game feel.
+              </p>
+            </div>
+
+            {/* Timeline Node 3 */}
+            <div className="relative">
+              <span className="absolute -left-[41px] top-1.5 h-4 w-4 rounded-full bg-[#090d16] border-[3px] border-[#FF6B57] shadow-[0_0_0_4px_rgba(255,107,87,0.12)]"></span>
+              <span className="font-mono text-[10px] font-black uppercase tracking-wider text-[#FF6B57]">2025</span>
+              <h4 className="text-white font-bold text-sm tracking-tight mt-1">Systems &amp; content</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mt-1.5 max-w-2xl">
+                Started building bigger things: match-3 grids, tower defense waves, an endless runner with random obstacles, a little maze AI. Around this point I began splitting projects into composer scenes and keeping the Lua modular.
+              </p>
+            </div>
+
+            {/* Timeline Node 4 */}
+            <div className="relative">
+              <span className="absolute -left-[41px] top-1.5 h-4 w-4 rounded-full bg-[#090d16] border-[3px] border-[#5BE2A0] shadow-[0_0_0_4px_rgba(91,226,160,0.12)]"></span>
+              <span className="font-mono text-[10px] font-black uppercase tracking-wider text-[#5BE2A0]">2026 · PRESENT</span>
+              <h4 className="text-white font-bold text-sm tracking-tight mt-1">Polish &amp; portability</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mt-1.5 max-w-2xl">
+                Tuning for 60fps on low-end Android, cross-platform input, and a personal library of 16 reusable game templates. Open to game dev roles and freelance 2D projects.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ENGINE / SKILLS LOADOUT SECTION */}
+        <section id="engine" className="flex flex-col gap-6 border-t border-white/10 pt-12">
+          <div className="flex flex-col gap-1 border-l-2 border-[#5BE2A0] pl-3">
+            <span className="font-mono text-[10px] text-[#5BE2A0] tracking-widest font-black uppercase">
+              ⚙ THE LOADOUT
+            </span>
+            <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+              Engine &amp; Toolkit
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm">
+              The frameworks, languages, and pipeline tools I reach for when building a 2D game.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+            {[
+              { n: "Solar2D", d: "core engine" },
+              { n: "Lua 5.x", d: "game logic" },
+              { n: "Box2D Physics", d: "physics.* API" },
+              { n: "Composer", d: "scene management" },
+              { n: "Widget Library", d: "UI & HUD" },
+              { n: "Sprite Sheets", d: "frame animation" },
+              { n: "Transitions", d: "tweening & easing" },
+              { n: "Tiled / Maps", d: "level design" },
+              { n: "Texture Packer", d: "atlas pipeline" },
+              { n: "Particle FX", d: "emitters & juice" },
+              { n: "Audio (OpenAL)", d: "sfx & music" },
+              { n: "iOS / Android", d: "build & deploy" }
+            ].map((skill, idx) => (
+              <div 
+                key={idx} 
+                className="skill bg-[#1B1838]/60 border border-[#332C5E] rounded-2xl p-4 shadow-sm hover:border-[#FFB23E] hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="sn text-white font-bold text-sm tracking-tight">{skill.n}</div>
+                <div className="sd font-mono text-[10px] text-slate-400 uppercase tracking-wider mt-1">{skill.d}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Edit Bay NLE Video Editor Section */}
-        <section id="editbay" className="flex flex-col gap-4 border-t border-white/10 pt-10">
+        <section id="editbay" className="flex flex-col gap-4 border-t border-white/10 pt-12">
           <EditBay />
         </section>
 
         {/* Career Timeline Section */}
-        <section className="mt-6 border-t border-white/10 pt-10">
+        <section className="mt-6 border-t border-white/10 pt-12">
           <SoftwareResume />
         </section>
 
