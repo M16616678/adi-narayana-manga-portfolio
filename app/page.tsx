@@ -98,18 +98,18 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#090d16] text-[#e2e8f0]">
       {/* Sticky navigation header */}
-      <nav className="sticky top-0 z-40 backdrop-blur-md bg-[#15132b]/80 border-b border-white/10 select-none">
+      <nav className="sticky top-0 z-40 backdrop-blur-md bg-[#050507]/90 border-b border-white/5 select-none">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           <div className="brand flex items-center gap-2.5 font-sans font-black text-white text-base sm:text-lg tracking-wide">
             <svg className="h-7 w-7 flex-none" viewBox="0 0 40 40" aria-hidden="true">
               <defs>
                 <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#FFB23E" />
-                  <stop offset="1" stopColor="#FF6B57" />
+                  <stop offset="0" stopColor="#E5A93B" />
+                  <stop offset="1" stopColor="#A47E3C" />
                 </linearGradient>
               </defs>
               <circle cx="20" cy="20" r="11" fill="url(#g1)" />
-              <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#7C6CFF" />
+              <path d="M27 11a11 11 0 1 0 0 18 13 13 0 0 1 0-18z" fill="#050507" />
             </svg>
             <span className="tracking-wider font-extrabold uppercase text-sm sm:text-base">
               <span className="hidden sm:inline">Adi Narayana Manga</span>
@@ -121,8 +121,8 @@ export default function Home() {
             <a href="#journey" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Journey</a>
             <a href="#engine" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Engine</a>
             <a href="#editbay" className="px-2.5 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/5 transition-all uppercase font-bold">Video</a>
-            <a href="dashboard" className="px-3 py-1.5 rounded-full text-[#9FE8FF] hover:text-white hover:bg-white/5 transition-all uppercase font-bold border border-[#9FE8FF]/20 bg-[#9FE8FF]/5">Dashboard</a>
-            <a href="#contact" className="px-4 py-2 rounded-full bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] font-black uppercase tracking-wider transition-all ml-1.5 sm:ml-3">Hire me</a>
+            <a href="dashboard" className="px-3 py-1.5 rounded-full text-[#E5A93B] hover:text-white hover:bg-white/5 transition-all uppercase font-bold border border-[#E5A93B]/20 bg-[#E5A93B]/5">Dashboard</a>
+            <a href="#contact" className="px-4 py-2 rounded-full bg-[#E5A93B] hover:bg-[#ffc266] text-[#050507] font-black uppercase tracking-wider transition-all ml-1.5 sm:ml-3">Hire me</a>
           </div>
         </div>
       </nav>
@@ -130,31 +130,59 @@ export default function Home() {
       <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-16">
         
         {/* Premium Cyber Terminal Header Split */}
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch border-b border-white/10 pb-8">
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch border-b border-white/5 pb-10">
           
           {/* Left Profile dossier details: 7 Columns */}
-          <div className="lg:col-span-7 flex flex-col justify-between gap-6">
-            <div className="flex flex-col gap-4">
-              <div className="logo-container flex items-center gap-3">
-                <div className="logo-badge flex items-center justify-center h-10 w-10 bg-blue-600 rounded-xl text-white font-black shadow-[0_0_15px_rgba(59,130,246,0.5)]">AM</div>
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white uppercase font-sans">
-                    Adi Narayana Manga
-                  </h1>
-                  <p className="text-[10px] sm:text-xs text-blue-400 font-black tracking-wider uppercase mt-1">
-                    2D Game Developer &middot; Solar2D Specialist &middot; Systems Engineer
-                  </p>
-                </div>
+          <div className="lg:col-span-7 flex flex-col justify-between gap-8">
+            <div className="flex flex-col gap-6">
+              {/* Category Prefix Line */}
+              <div className="flex items-center gap-2 text-[#E5A93B] font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase select-none opacity-90">
+                <span className="w-6 h-[1px] bg-[#E5A93B]/40"></span>
+                <span>2D</span>
+                <span>·</span>
+                <span>3D</span>
+                <span>·</span>
+                <span>Physics</span>
+                <span>·</span>
+                <span>Games</span>
+                <span>·</span>
+                <span>Lua</span>
+              </div>
+              
+              <div>
+                <h1 className="text-4xl sm:text-5xl lg:text-[4.5rem] font-serif tracking-tight text-white leading-none font-normal">
+                  Adi Narayana <br />
+                  <span className="font-serif italic text-[#E5A93B]">Manga</span>
+                </h1>
+                <p className="text-[10px] sm:text-xs text-[#E5A93B] font-mono tracking-[0.2em] uppercase mt-4">
+                  2D Game Developer &middot; Systems Engineer
+                </p>
               </div>
 
-              <div className="text-sm text-slate-300 leading-relaxed max-w-xl">
-                I make small mobile games with the <strong className="text-white">Solar2D</strong> engine and <strong className="text-white">Lua</strong>. Everything on this page is live and running in your browser, so go ahead and <strong className="text-white">tap a screen to play.</strong>
+              <div className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl font-light">
+                I make small mobile games with the <strong className="text-white font-medium">Solar2D</strong> engine and <strong className="text-white font-medium">Lua</strong>. Everything on this page is live and running in your browser, so go ahead and <strong className="text-white font-medium">tap a screen to play.</strong>
+              </div>
+
+              {/* Action Buttons styled like reference site */}
+              <div className="flex flex-wrap gap-4 mt-2">
+                <a 
+                  href="#library" 
+                  className="px-6 py-3 bg-[#E5A93B] hover:bg-[#ffc266] text-[#050507] font-black uppercase text-xs tracking-wider rounded transition-all font-mono shadow-[0_4px_15px_rgba(229,169,59,0.15)]"
+                >
+                  View My Work
+                </a>
+                <a 
+                  href="#contact" 
+                  className="px-6 py-3 border border-[#E5A93B]/30 hover:border-[#E5A93B] text-[#E5A93B] hover:bg-[#E5A93B]/5 font-bold uppercase text-xs tracking-wider rounded transition-all font-mono"
+                >
+                  Get In Touch
+                </a>
               </div>
             </div>
             
             {/* Quick Contact & Status panel */}
-            <div className="flex flex-wrap items-center gap-4 text-xs mt-auto">
-              <div className="flex bg-slate-950/80 border border-white/5 p-1 rounded-xl shadow-inner font-mono text-[10px] sm:text-xs">
+            <div className="flex flex-wrap items-center gap-4 text-xs mt-auto pt-4">
+              <div className="flex bg-[#0d0d10] border border-white/5 p-1 rounded-xl shadow-inner font-mono text-[10px]">
                 <a 
                   href="mailto:mangaaa@mail.uc.edu" 
                   className="px-3.5 py-2 font-bold uppercase rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
@@ -171,21 +199,21 @@ export default function Home() {
                 </a>
               </div>
               
-              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-950/30 border border-emerald-500/20 text-emerald-400 font-bold uppercase rounded-xl text-[10px] sm:text-xs">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <div className="flex items-center gap-2 px-3 py-2 bg-amber-950/10 border border-[#E5A93B]/15 text-[#E5A93B] font-bold uppercase rounded-xl text-[10px] font-mono">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E5A93B] animate-ping"></span>
                 STATUS: READY FOR OPPORTUNITIES
               </div>
             </div>
           </div>
 
           {/* Right Interactive Console Terminal: 5 Columns */}
-          <div className="lg:col-span-5 flex flex-col bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] min-h-[260px] relative group crt-screen">
+          <div className="lg:col-span-5 flex flex-col bg-[#0d0d10] border border-white/5 rounded-2xl overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.6)] min-h-[260px] relative group crt-screen">
             {/* CRT scanline simulation overlay */}
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.015] to-transparent opacity-60"></div>
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.01] to-transparent opacity-60"></div>
             
             {/* Terminal Titlebar */}
-            <div className="flex justify-between items-center bg-slate-900 border-b border-white/5 px-4 py-2 text-[10px] font-mono text-slate-400">
-              <span>💻 SOLAR2D SHELL - ADI_MANGA_DOSSIER</span>
+            <div className="flex justify-between items-center bg-[#070709] border-b border-white/5 px-4 py-2.5 text-[9px] font-mono text-slate-400">
+              <span className="tracking-wide">💻 SOLAR2D SHELL - ADI_MANGA_DOSSIER</span>
               <div className="flex gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-red-500/80"></span>
                 <span className="h-2 w-2 rounded-full bg-yellow-500/80"></span>
@@ -194,7 +222,7 @@ export default function Home() {
             </div>
 
             {/* Terminal Logs Output Scrollbar */}
-            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-emerald-400 crt-text flex flex-col gap-1.5 max-h-[160px] selection:bg-emerald-800 selection:text-white">
+            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-[#FFB23E] crt-text flex flex-col gap-1.5 max-h-[160px] selection:bg-[#E5A93B]/30 selection:text-white">
               {terminalLogs.map((log, index) => (
                 <div key={index} className="whitespace-pre-wrap leading-relaxed">
                   {log}
@@ -204,28 +232,28 @@ export default function Home() {
             </div>
 
             {/* Preset click shortcuts */}
-            <div className="flex gap-1.5 px-3 py-2 bg-slate-900/50 border-t border-white/5 overflow-x-auto">
+            <div className="flex gap-1.5 px-3 py-2 bg-[#070709]/50 border-t border-white/5 overflow-x-auto">
               <button 
                 onClick={() => handleCommand("diagnostics")} 
-                className="px-2 py-0.5 border border-emerald-500/20 hover:border-emerald-400 bg-emerald-950/20 hover:bg-emerald-950/40 text-[9px] font-mono font-bold uppercase rounded text-emerald-400 transition-colors"
+                className="px-2 py-0.5 border border-[#E5A93B]/10 hover:border-[#E5A93B] bg-[#E5A93B]/5 hover:bg-[#E5A93B]/10 text-[9px] font-mono font-bold uppercase rounded text-[#E5A93B] transition-colors"
               >
                 [Diagnostics]
               </button>
               <button 
                 onClick={() => handleCommand("specs")} 
-                className="px-2 py-0.5 border border-blue-500/20 hover:border-blue-400 bg-blue-950/20 hover:bg-blue-950/40 text-[9px] font-mono font-bold uppercase rounded text-blue-400 transition-colors"
+                className="px-2 py-0.5 border border-[#E5A93B]/10 hover:border-[#E5A93B] bg-[#E5A93B]/5 hover:bg-[#E5A93B]/10 text-[9px] font-mono font-bold uppercase rounded text-[#E5A93B] transition-colors"
               >
                 [Specs]
               </button>
               <button 
                 onClick={() => handleCommand("secret")} 
-                className="px-2 py-0.5 border border-purple-500/20 hover:border-purple-400 bg-purple-950/20 hover:bg-purple-950/40 text-[9px] font-mono font-bold uppercase rounded text-purple-400 transition-colors"
+                className="px-2 py-0.5 border border-[#E5A93B]/10 hover:border-[#E5A93B] bg-[#E5A93B]/5 hover:bg-[#E5A93B]/10 text-[9px] font-mono font-bold uppercase rounded text-[#E5A93B] transition-colors"
               >
                 [Secret Invader]
               </button>
               <button 
                 onClick={() => handleCommand("clear")} 
-                className="px-2 py-0.5 border border-slate-700 hover:border-slate-500 bg-slate-800/20 hover:bg-slate-800/40 text-[9px] font-mono font-bold uppercase rounded text-slate-400 transition-colors"
+                className="px-2 py-0.5 border border-white/10 hover:border-slate-400 bg-white/5 hover:bg-white/10 text-[9px] font-mono font-bold uppercase rounded text-slate-400 transition-colors"
               >
                 [Clear]
               </button>
@@ -237,15 +265,15 @@ export default function Home() {
                 e.preventDefault();
                 handleCommand(terminalInput);
               }} 
-              className="flex border-t border-white/10 bg-slate-950"
+              className="flex border-t border-white/5 bg-[#070709]"
             >
-              <span className="p-3 pr-1 text-emerald-400 font-mono text-[10px] select-none font-bold">&gt;</span>
+              <span className="p-3 pr-1 text-[#E5A93B] font-mono text-[10px] select-none font-bold">&gt;</span>
               <input 
                 type="text" 
                 value={terminalInput}
                 onChange={(e) => setTerminalInput(e.target.value)}
                 placeholder="Type command here (e.g. 'help')..."
-                className="flex-1 bg-transparent p-3 pl-1 border-0 focus:outline-none text-[10px] font-mono text-emerald-300 placeholder-slate-600 focus:ring-0"
+                className="flex-1 bg-transparent p-3 pl-1 border-0 focus:outline-none text-[10px] font-mono text-[#E5A93B] placeholder-slate-600 focus:ring-0"
               />
             </form>
           </div>
@@ -492,10 +520,10 @@ export default function Home() {
 
         {/* Contact section */}
         <section id="contact" className="w-full mt-6">
-          <div className="bg-gradient-to-br from-[#241F4B] to-[#1B1838] border border-[#332C5E] rounded-3xl p-8 text-center relative overflow-hidden shadow-xl shadow-black/40">
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(500px_300px_at_50%_0%,rgba(255,178,62,0.1),transparent_70%)]"></div>
+          <div className="bg-gradient-to-br from-[#0d0d10] to-[#08080a] border border-white/5 rounded-3xl p-8 text-center relative overflow-hidden shadow-xl shadow-black/40">
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(500px_300px_at_50%_0%,rgba(229,169,59,0.06),transparent_70%)]"></div>
             
-            <span className="block font-mono text-[10px] text-[#7C6CFF] tracking-[0.2em] font-black uppercase mb-4">
+            <span className="block font-mono text-[10px] text-[#E5A93B] tracking-[0.2em] font-black uppercase mb-4">
               ★ INSERT COIN ★
             </span>
             <h2 className="text-2xl sm:text-4xl font-sans font-black text-white uppercase mb-3 relative">
@@ -508,13 +536,13 @@ export default function Home() {
             <div className="flex flex-wrap gap-4 justify-center relative z-10 text-xs sm:text-sm font-mono">
               <a 
                 href="mailto:mangaaa@mail.uc.edu" 
-                className="px-5 py-3.5 bg-[#FFB23E] hover:bg-[#ffc266] text-[#1a1330] rounded-xl font-black uppercase transition-all shadow-md"
+                className="px-5 py-3.5 bg-[#E5A93B] hover:bg-[#ffc266] text-[#050507] rounded-xl font-black uppercase transition-all shadow-md"
               >
                 ✉ mangaaa@mail.uc.edu
               </a>
               <a 
                 href="tel:+15135011280" 
-                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
+                className="px-5 py-3.5 bg-[#050507] border border-white/10 text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#E5A93B] transition-all"
               >
                 ☎ +1 513-501-1280
               </a>
@@ -522,7 +550,7 @@ export default function Home() {
                 href="https://linkedin.com/in/adi-narayana-manga" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
+                className="px-5 py-3.5 bg-[#050507] border border-white/10 text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#E5A93B] transition-all"
               >
                 in · LinkedIn
               </a>
@@ -530,7 +558,7 @@ export default function Home() {
                 href="https://github.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-5 py-3.5 bg-[#090d16] border border-[#332C5E] text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#FFB23E] transition-all"
+                className="px-5 py-3.5 bg-[#050507] border border-white/10 text-slate-300 hover:text-white rounded-xl font-bold uppercase hover:border-[#E5A93B] transition-all"
               >
                 ⌥ GitHub
               </a>

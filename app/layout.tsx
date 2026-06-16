@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Outfit, JetBrains_Mono } from "next/font/google";
+import { Playfair_Display, Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+const playfair = Playfair_Display({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -25,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${outfit.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#090d16] text-[#e2e8f0] min-h-screen`}
+        className={`${playfair.variable} ${outfit.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#050507] text-[#e2e8f0] min-h-screen`}
       >
         {children}
       </body>

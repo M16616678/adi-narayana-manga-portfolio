@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: "/adi-narayana-manga-portfolio",
 };
 
 export default nextConfig;

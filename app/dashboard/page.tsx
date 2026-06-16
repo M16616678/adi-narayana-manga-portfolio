@@ -115,7 +115,7 @@ export default function DashboardPage() {
             </a>
           </div>
           <div className="flex items-center gap-3 text-xs font-mono">
-            <a href="../" className="px-4 py-2 rounded-full bg-[#FF6B57] hover:bg-[#ff8f80] text-[#1a1330] font-black uppercase tracking-wider transition-all">
+            <a href="../" className="px-4 py-2 rounded-full bg-[#E5A93B] hover:bg-[#ffc266] text-[#050507] font-black uppercase tracking-wider transition-all">
               ◀ BACK TO PORTFOLIO
             </a>
           </div>
@@ -125,35 +125,47 @@ export default function DashboardPage() {
       <main className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-10">
         
         {/* Premium Cyber Terminal Header Split */}
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch border-b border-white/10 pb-8">
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch border-b border-white/5 pb-8">
           
           {/* Left Profile dossier details: 7 Columns */}
           <div className="lg:col-span-7 flex flex-col justify-between gap-6">
-            <div className="flex flex-col gap-4">
-              <div className="logo-container flex items-center gap-3">
-                <div className="logo-badge flex items-center justify-center h-10 w-10 bg-blue-600 rounded-xl text-white font-black shadow-[0_0_15px_rgba(59,130,246,0.5)]">AM</div>
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white uppercase font-sans">
-                    Adi Narayana Manga
-                  </h1>
-                  <p className="text-[10px] sm:text-xs text-blue-400 font-black tracking-wider uppercase mt-1">
-                    2D Game Developer &middot; Solar2D Specialist &middot; Systems Engineer
-                  </p>
-                </div>
+            <div className="flex flex-col gap-6">
+              {/* Category Prefix Line */}
+              <div className="flex items-center gap-2 text-[#E5A93B] font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase select-none opacity-90">
+                <span className="w-6 h-[1px] bg-[#E5A93B]/40"></span>
+                <span>2D</span>
+                <span>·</span>
+                <span>3D</span>
+                <span>·</span>
+                <span>Physics</span>
+                <span>·</span>
+                <span>Games</span>
+                <span>·</span>
+                <span>Lua</span>
               </div>
 
-              <div className="text-sm text-slate-300 leading-relaxed max-w-xl">
+              <div>
+                <h1 className="text-4xl sm:text-5xl lg:text-[4.5rem] font-serif tracking-tight text-white leading-none font-normal">
+                  Adi Narayana <br />
+                  <span className="font-serif italic text-[#E5A93B]">Manga</span>
+                </h1>
+                <p className="text-[10px] sm:text-xs text-[#E5A93B] font-mono tracking-[0.2em] uppercase mt-4">
+                  2D Game Developer &middot; Systems Engineer
+                </p>
+              </div>
+
+              <div className="text-sm text-slate-300 leading-relaxed max-w-xl font-light">
                 I build high-performance 2D mobile games and playable worlds. Specialist in 
-                <strong className="text-white"> Solar2D (Corona SDK)</strong>, 
-                <strong className="text-white"> Lua scripting</strong>, and custom 
-                <strong className="text-white"> Box2D physics systems</strong>. I prioritize creating tactile game feel, 
+                <strong className="text-white font-medium"> Solar2D (Corona SDK)</strong>, 
+                <strong className="text-white font-medium"> Lua scripting</strong>, and custom 
+                <strong className="text-white font-medium"> Box2D physics systems</strong>. I prioritize creating tactile game feel, 
                 responsive controls, and smooth 60fps animations.
               </div>
             </div>
             
             {/* Quick Contact & Status panel */}
-            <div className="flex flex-wrap items-center gap-4 text-xs mt-auto">
-              <div className="flex bg-slate-950/80 border border-white/5 p-1 rounded-xl shadow-inner font-mono text-[10px] sm:text-xs">
+            <div className="flex flex-wrap items-center gap-4 text-xs mt-auto pt-4">
+              <div className="flex bg-[#0d0d10] border border-white/5 p-1 rounded-xl shadow-inner font-mono text-[10px]">
                 <a 
                   href="mailto:mangaaa@mail.uc.edu" 
                   className="px-3.5 py-2 font-bold uppercase rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
@@ -170,21 +182,21 @@ export default function DashboardPage() {
                 </a>
               </div>
               
-              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-950/30 border border-emerald-500/20 text-emerald-400 font-bold uppercase rounded-xl text-[10px] sm:text-xs">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <div className="flex items-center gap-2 px-3 py-2 bg-amber-950/10 border border-[#E5A93B]/15 text-[#E5A93B] font-bold uppercase rounded-xl text-[10px] font-mono">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E5A93B] animate-ping"></span>
                 STATUS: READY FOR OPPORTUNITIES
               </div>
             </div>
           </div>
 
           {/* Right Interactive Console Terminal: 5 Columns */}
-          <div className="lg:col-span-5 flex flex-col bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] min-h-[260px] relative group">
+          <div className="lg:col-span-5 flex flex-col bg-[#0d0d10] border border-white/5 rounded-2xl overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.6)] min-h-[260px] relative group crt-screen">
             {/* CRT scanline simulation overlay */}
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.015] to-transparent opacity-60"></div>
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.01] to-transparent opacity-60"></div>
             
             {/* Terminal Titlebar */}
-            <div className="flex justify-between items-center bg-slate-900 border-b border-white/5 px-4 py-2 text-[10px] font-mono text-slate-400">
-              <span>💻 SOLAR2D SHELL - ADI_MANGA_DOSSIER</span>
+            <div className="flex justify-between items-center bg-[#070709] border-b border-white/5 px-4 py-2.5 text-[9px] font-mono text-slate-400">
+              <span className="tracking-wide">💻 SOLAR2D SHELL - ADI_MANGA_DOSSIER</span>
               <div className="flex gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-red-500/80"></span>
                 <span className="h-2 w-2 rounded-full bg-yellow-500/80"></span>
@@ -193,7 +205,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Terminal Logs Output Scrollbar */}
-            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-emerald-400 flex flex-col gap-1.5 max-h-[160px] selection:bg-emerald-800 selection:text-white">
+            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-[#FFB23E] crt-text flex flex-col gap-1.5 max-h-[160px] selection:bg-[#E5A93B]/30 selection:text-white">
               {terminalLogs.map((log, index) => (
                 <div key={index} className="whitespace-pre-wrap leading-relaxed">
                   {log}
@@ -203,28 +215,28 @@ export default function DashboardPage() {
             </div>
 
             {/* Preset click shortcuts */}
-            <div className="flex gap-1.5 px-3 py-2 bg-slate-900/50 border-t border-white/5 overflow-x-auto">
+            <div className="flex gap-1.5 px-3 py-2 bg-[#070709]/50 border-t border-white/5 overflow-x-auto">
               <button 
                 onClick={() => handleCommand("diagnostics")} 
-                className="px-2 py-0.5 border border-emerald-500/20 hover:border-emerald-400 bg-emerald-950/20 hover:bg-emerald-950/40 text-[9px] font-mono font-bold uppercase rounded text-emerald-400 transition-colors"
+                className="px-2 py-0.5 border border-[#E5A93B]/10 hover:border-[#E5A93B] bg-[#E5A93B]/5 hover:bg-[#E5A93B]/10 text-[9px] font-mono font-bold uppercase rounded text-[#E5A93B] transition-colors"
               >
                 [Diagnostics]
               </button>
               <button 
                 onClick={() => handleCommand("specs")} 
-                className="px-2 py-0.5 border border-blue-500/20 hover:border-blue-400 bg-blue-950/20 hover:bg-blue-950/40 text-[9px] font-mono font-bold uppercase rounded text-blue-400 transition-colors"
+                className="px-2 py-0.5 border border-[#E5A93B]/10 hover:border-[#E5A93B] bg-[#E5A93B]/5 hover:bg-[#E5A93B]/10 text-[9px] font-mono font-bold uppercase rounded text-[#E5A93B] transition-colors"
               >
                 [Specs]
               </button>
               <button 
                 onClick={() => handleCommand("secret")} 
-                className="px-2 py-0.5 border border-purple-500/20 hover:border-purple-400 bg-purple-950/20 hover:bg-purple-950/40 text-[9px] font-mono font-bold uppercase rounded text-purple-400 transition-colors"
+                className="px-2 py-0.5 border border-[#E5A93B]/10 hover:border-[#E5A93B] bg-[#E5A93B]/5 hover:bg-[#E5A93B]/10 text-[9px] font-mono font-bold uppercase rounded text-[#E5A93B] transition-colors"
               >
                 [Secret Invader]
               </button>
               <button 
                 onClick={() => handleCommand("clear")} 
-                className="px-2 py-0.5 border border-slate-700 hover:border-slate-500 bg-slate-800/20 hover:bg-slate-800/40 text-[9px] font-mono font-bold uppercase rounded text-slate-400 transition-colors"
+                className="px-2 py-0.5 border border-white/10 hover:border-slate-400 bg-white/5 hover:bg-white/10 text-[9px] font-mono font-bold uppercase rounded text-slate-400 transition-colors"
               >
                 [Clear]
               </button>
@@ -236,15 +248,15 @@ export default function DashboardPage() {
                 e.preventDefault();
                 handleCommand(terminalInput);
               }} 
-              className="flex border-t border-white/10 bg-slate-950"
+              className="flex border-t border-white/5 bg-[#070709]"
             >
-              <span className="p-3 pr-1 text-emerald-400 font-mono text-[10px] select-none font-bold">&gt;</span>
+              <span className="p-3 pr-1 text-[#E5A93B] font-mono text-[10px] select-none font-bold">&gt;</span>
               <input 
                 type="text" 
                 value={terminalInput}
                 onChange={(e) => setTerminalInput(e.target.value)}
                 placeholder="Type command here (e.g. 'help')..."
-                className="flex-1 bg-transparent p-3 pl-1 border-0 focus:outline-none text-[10px] font-mono text-emerald-300 placeholder-slate-600 focus:ring-0"
+                className="flex-1 bg-transparent p-3 pl-1 border-0 focus:outline-none text-[10px] font-mono text-[#E5A93B] placeholder-slate-600 focus:ring-0"
               />
             </form>
           </div>
