@@ -399,15 +399,15 @@ export default function HeroCabinet() {
             onPointerMove={handlePointer}
             onPointerDown={handlePointer}
             onPointerLeave={handlePointerLeave}
-            className="block w-full h-full cursor-crosshair"
+            className="block w-full h-full cursor-crosshair pixelated"
             aria-label="Playable retro space star-catcher game"
           />
 
           {/* CRT scanlines effect */}
-          <div className="scan absolute inset-0 pointer-events-none z-10 mix-blend-overlay opacity-30 bg-repeat-y bg-[linear-gradient(to_bottom,rgba(255,255,255,0.05)_0px_1px,transparent_1px_3px)]"></div>
+          <div className="crt-scanlines"></div>
           
           {/* Vignette retro shading */}
-          <div className="vig absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_80px_rgba(8,6,18,0.7)]"></div>
+          <div className="crt-vignette"></div>
 
           {/* HUD Score */}
           <div className="hud absolute top-3 left-4 z-20 font-mono text-[10px] sm:text-xs text-[#E5A93B] drop-shadow-[0_2px_0_rgba(0,0,0,0.8)] tracking-wider font-bold">

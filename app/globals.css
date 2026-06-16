@@ -92,4 +92,36 @@ html {
   box-shadow: 0 0 15px rgba(255, 178, 62, 0.4);
 }
 
+/* Pixel rendering override */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+}
+
+/* Repeating CRT Scanline Pattern */
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: overlay;
+  opacity: 0.28;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+/* Dark CRT Vignette Shading */
+.crt-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: inset 0 0 60px 10px rgba(0, 0, 0, 0.75);
+}
+
+
 

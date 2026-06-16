@@ -15,6 +15,21 @@ interface GameBuild {
   timeline: string[];
 }
 
+const C = {
+  bg0: '#060608',
+  bg1: '#0d0d10',
+  bg2: '#15151b',
+  sun: '#E5A93B',
+  coral: '#FF6B57',
+  moon: '#A47E3C',
+  star: '#FFB23E',
+  green: '#5BE2A0',
+  pink: '#FF8FD0',
+  text: '#EDEBFF',
+  mut: '#A29DC9',
+  dim: '#6E699A'
+};
+
 const GAME_BUILDS: GameBuild[] = [
   {
     id: "star_catcher",
@@ -423,29 +438,34 @@ function GameCard({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const logicalWidth = 160;
+    const logicalHeight = 100;
+
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseX.current = ((e.clientX - rect.left) / rect.width) * canvas.width;
+      mouseX.current = ((e.clientX - rect.left) / rect.width) * logicalWidth;
     };
     canvas.addEventListener("mousemove", handleMouseMove);
 
     // Frame rendering function
     const loop = (timestamp: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.scale(2, 2);
+      ctx.clearRect(0, 0, logicalWidth, logicalHeight);
 
       // Render mini grid backdrop
       ctx.strokeStyle = "rgba(255, 255, 255, 0.02)";
       ctx.lineWidth = 1;
-      for (let x = 0; x < canvas.width; x += 15) {
+      for (let x = 0; x < logicalWidth; x += 15) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
+        ctx.lineTo(x, logicalHeight);
         ctx.stroke();
       }
-      for (let y = 0; y < canvas.height; y += 15) {
+      for (let y = 0; y < logicalHeight; y += 15) {
         ctx.beginPath();
         ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
+        ctx.lineTo(logicalWidth, y);
         ctx.stroke();
       }
 
@@ -819,7 +839,7 @@ function GameCard({
           ctx.strokeStyle = "rgba(64, 110, 142, 0.4)";
           ctx.lineWidth = 2;
           ctx.beginPath();
-          for (let i = 0; i < canvas.width; i++) {
+          for (let i = 0; i < logicalWidth; i++) {
             const y = 50 + Math.sin((i + timestamp * 0.05) * 0.05) * 15;
             if (i === 0) ctx.moveTo(i, y);
             else ctx.lineTo(i, y);
@@ -832,6 +852,7 @@ function GameCard({
       if (isHovered) {
         frameId.current = requestAnimationFrame(loop);
       }
+      ctx.restore();
     };
 
     if (isHovered) {
@@ -858,12 +879,13 @@ function GameCard({
       <div className="relative aspect-[16/10] bg-slate-950/80 border-b border-white/[0.06] overflow-hidden">
         <canvas 
           ref={canvasRef} 
-          width={160} 
-          height={100}
-          className="w-full h-full bg-slate-950/90 object-cover"
+          width={320} 
+          height={200}
+          className="w-full h-full bg-slate-950/90 object-cover pixelated"
         />
         {/* CRT Scanline glow overlays */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.03] to-transparent opacity-60"></div>
+        <div className="crt-scanlines"></div>
+        <div className="crt-vignette"></div>
         
         {/* Game play status HUD badge */}
         <div className="absolute top-3 left-3 bg-[#0f172a]/95 border border-white/10 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest text-slate-300 backdrop-blur-sm">
@@ -1155,7 +1177,7 @@ export default function DashboardPortfolio() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * canvas.width;
+      const x = ((e.clientX - rect.left) / rect.width) * 380;
       mouseX.current = x;
     };
 
@@ -1248,22 +1270,25 @@ export default function DashboardPortfolio() {
 
     const frame = (timestamp: number) => {
       const state = gameStateRef.current;
+      ctx.save();
+      ctx.scale(2, 2);
+      ctx.clearRect(0, 0, 380, 300);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Cyber Grid Background
       ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
       ctx.lineWidth = 1;
       const step = 20;
-      for (let x = 0; x < canvas.width; x += step) {
+      for (let x = 0; x < 380; x += step) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
+        ctx.lineTo(x, 300);
         ctx.stroke();
       }
-      for (let y = 0; y < canvas.height; y += step) {
+      for (let y = 0; y < 300; y += step) {
         ctx.beginPath();
         ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
+        ctx.lineTo(380, y);
         ctx.stroke();
       }
 
@@ -1294,7 +1319,7 @@ export default function DashboardPortfolio() {
 
         if (Math.random() < 0.06) {
           state.stars.push({
-            x: Math.random() * canvas.width,
+            x: Math.random() * 380,
             y: 0,
             size: 6,
             speed: (1.5 + Math.random() * 2) * speedSetting * 0.4
@@ -1302,7 +1327,7 @@ export default function DashboardPortfolio() {
         }
         if (Math.random() < 0.015) {
           state.bombs.push({
-            x: Math.random() * canvas.width,
+            x: Math.random() * 380,
             y: 0,
             size: 8,
             speed: (2 + Math.random() * 1.5) * speedSetting * 0.4
@@ -1318,7 +1343,7 @@ export default function DashboardPortfolio() {
 
           if (Math.hypot(s.x - state.x, s.y - state.y) < 24) {
             state.score += 10;
-            s.y = canvas.height + 100;
+            s.y = 300 + 100;
             for (let i = 0; i < 10; i++) {
               state.particles.push({
                 x: s.x,
@@ -1331,7 +1356,7 @@ export default function DashboardPortfolio() {
             }
           }
         });
-        state.stars = state.stars.filter((s) => s.y < canvas.height);
+        state.stars = state.stars.filter((s) => s.y < 300);
 
         state.bombs.forEach((b) => {
           b.y += b.speed;
@@ -1342,7 +1367,7 @@ export default function DashboardPortfolio() {
 
           if (Math.hypot(b.x - state.x, b.y - state.y) < 24) {
             state.score = Math.max(0, state.score - 30);
-            b.y = canvas.height + 100;
+            b.y = 300 + 100;
             for (let i = 0; i < 15; i++) {
               state.particles.push({
                 x: b.x,
@@ -1355,7 +1380,7 @@ export default function DashboardPortfolio() {
             }
           }
         });
-        state.bombs = state.bombs.filter((b) => b.y < canvas.height);
+        state.bombs = state.bombs.filter((b) => b.y < 300);
       }
       
       // 2. ASTRO BLASTER
@@ -1383,7 +1408,7 @@ export default function DashboardPortfolio() {
 
         if (Math.random() < 0.05) {
           state.asteroids.push({
-            x: Math.random() * canvas.width,
+            x: Math.random() * 380,
             y: 0,
             size: 12 + Math.random() * 18,
             speed: (1.2 + Math.random() * 2) * speedSetting * 0.4
@@ -1399,7 +1424,7 @@ export default function DashboardPortfolio() {
 
           state.bullets.forEach((b) => {
             if (Math.hypot(b.x - ast.x, b.y - ast.y) < ast.size + 6) {
-              ast.y = canvas.height + 100;
+              ast.y = 300 + 100;
               b.y = -100;
               state.score += 10;
               for (let i = 0; i < 12; i++) {
@@ -1415,7 +1440,7 @@ export default function DashboardPortfolio() {
             }
           });
         });
-        state.asteroids = state.asteroids.filter((a) => a.y < canvas.height);
+        state.asteroids = state.asteroids.filter((a) => a.y < 300);
       }
       
       // 3. NEON BREAKER
@@ -1430,13 +1455,13 @@ export default function DashboardPortfolio() {
         ball.x += ball.vx * speedSetting * 0.4;
         ball.y += ball.vy * speedSetting * 0.4;
 
-        if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.vx = -ball.vx;
+        if (ball.x - ball.radius < 0 || ball.x + ball.radius > 380) ball.vx = -ball.vx;
         if (ball.y - ball.radius < 0) ball.vy = -ball.vy;
         if (ball.y + ball.radius >= state.y && ball.x >= state.x - 44 && ball.x <= state.x + 44) {
           ball.vy = -Math.abs(ball.vy);
           ball.vx = (ball.x - state.x) * 0.15;
         }
-        if (ball.y > canvas.height + 20) {
+        if (ball.y > 300 + 20) {
           ball.x = 190;
           ball.y = 150;
           ball.vx = 2.5;
@@ -1509,8 +1534,8 @@ export default function DashboardPortfolio() {
           if (state.snakeDir === "down") nextHead.y += 1;
           if (state.snakeDir === "up") nextHead.y -= 1;
 
-          const cols = Math.floor(canvas.width / cellSize);
-          const rows = Math.floor(canvas.height / cellSize);
+          const cols = Math.floor(380 / cellSize);
+          const rows = Math.floor(300 / cellSize);
 
           if (nextHead.x < 0) nextHead.x = cols - 1;
           if (nextHead.x >= cols) nextHead.x = 0;
@@ -1568,8 +1593,8 @@ export default function DashboardPortfolio() {
           hopper.y = hopper.radius;
           hopper.vy = 0;
         }
-        if (hopper.y > canvas.height - hopper.radius) {
-          hopper.y = canvas.height - hopper.radius;
+        if (hopper.y > 300 - hopper.radius) {
+          hopper.y = 300 - hopper.radius;
           hopper.vy = 0;
           state.score = 0;
         }
@@ -1584,7 +1609,7 @@ export default function DashboardPortfolio() {
           state.lastPipeSpawn = now;
           const gap = 85;
           const top = 40 + Math.random() * 120;
-          state.pipes.push({ x: canvas.width, top, bottom: top + gap, passed: false });
+          state.pipes.push({ x: 380, top, bottom: top + gap, passed: false });
         }
 
         state.pipes.forEach((p) => {
@@ -1594,8 +1619,8 @@ export default function DashboardPortfolio() {
           ctx.lineWidth = 2;
           ctx.fillRect(p.x, 0, 40, p.top);
           ctx.strokeRect(p.x, -2, 40, p.top + 2);
-          ctx.fillRect(p.x, p.bottom, 40, canvas.height - p.bottom);
-          ctx.strokeRect(p.x, p.bottom, 40, canvas.height - p.bottom + 2);
+          ctx.fillRect(p.x, p.bottom, 40, 300 - p.bottom);
+          ctx.strokeRect(p.x, p.bottom, 40, 300 - p.bottom + 2);
 
           if (p.x < 100 && !p.passed) {
             p.passed = true;
@@ -1627,17 +1652,17 @@ export default function DashboardPortfolio() {
       // 6. PIXEL SPRINT
       else if (activeGame.id === "pixel_sprint") {
         state.pixelRunner.distance += speedSetting * 0.15;
-        const scrollOffset = (state.pixelRunner.distance) % canvas.width;
+        const scrollOffset = (state.pixelRunner.distance) % 380;
 
         // Draw parallax hills
         ctx.fillStyle = "#162032";
         ctx.beginPath();
-        ctx.arc(canvas.width - scrollOffset, 240, 100, 0, Math.PI * 2);
-        ctx.arc(2 * canvas.width - scrollOffset, 240, 120, 0, Math.PI * 2);
+        ctx.arc(380 - scrollOffset, 240, 100, 0, Math.PI * 2);
+        ctx.arc(2 * 380 - scrollOffset, 240, 120, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = "#22314d";
-        ctx.fillRect(0, 230, canvas.width, canvas.height - 230);
+        ctx.fillRect(0, 230, 380, 300 - 230);
 
         // Update physics
         const runner = state.pixelRunner;
@@ -1650,10 +1675,10 @@ export default function DashboardPortfolio() {
 
         // Coins & Obstacles spawn
         if (state.pixelCoins.length < 3) {
-          state.pixelCoins.push({ x: canvas.width + Math.random() * 200, y: 160 + Math.random() * 50 });
+          state.pixelCoins.push({ x: 380 + Math.random() * 200, y: 160 + Math.random() * 50 });
         }
         if (state.pixelObstacles.length < 2) {
-          state.pixelObstacles.push({ x: canvas.width + 100 + Math.random() * 300, y: 220 });
+          state.pixelObstacles.push({ x: 380 + 100 + Math.random() * 300, y: 220 });
         }
 
         // Draw Coins
@@ -1778,7 +1803,7 @@ export default function DashboardPortfolio() {
           bubbleProj.x += bubbleProj.vx;
           bubbleProj.y += bubbleProj.vy;
 
-          if (bubbleProj.x < 15 || bubbleProj.x > canvas.width - 15) {
+          if (bubbleProj.x < 15 || bubbleProj.x > 380 - 15) {
             bubbleProj.vx = -bubbleProj.vx;
           }
 
@@ -2021,8 +2046,8 @@ export default function DashboardPortfolio() {
         ctx.lineWidth = 4;
         ctx.setLineDash([15, 15]);
         ctx.beginPath();
-        ctx.moveTo(125, 0); ctx.lineTo(125, canvas.height);
-        ctx.moveTo(250, 0); ctx.lineTo(250, canvas.height);
+        ctx.moveTo(125, 0); ctx.lineTo(125, 300);
+        ctx.moveTo(250, 0); ctx.lineTo(250, 300);
         ctx.stroke();
         ctx.setLineDash([]);
 
@@ -2044,7 +2069,7 @@ export default function DashboardPortfolio() {
           ctx.fillStyle = c.color;
           ctx.fillRect(c.x - 16, c.y - 25, 32, 50);
 
-          if (c.y > canvas.height + 50) {
+          if (c.y > 300 + 50) {
             state.score += 10;
           }
 
@@ -2053,7 +2078,7 @@ export default function DashboardPortfolio() {
             Math.abs(state.y - c.y) < 40
           ) {
             state.score = 0;
-            c.y = canvas.height + 200;
+            c.y = 300 + 200;
             for (let i = 0; i < 20; i++) {
               state.particles.push({
                 x: c.x, y: c.y,
@@ -2063,7 +2088,7 @@ export default function DashboardPortfolio() {
             }
           }
         });
-        state.skyRacerTraffic = state.skyRacerTraffic.filter((c) => c.y < canvas.height + 80);
+        state.skyRacerTraffic = state.skyRacerTraffic.filter((c) => c.y < 300 + 80);
       }
       
       // 12. LUA LANDER
@@ -2129,7 +2154,7 @@ export default function DashboardPortfolio() {
             }
             lander.x = 190; lander.y = 50; lander.vx = 1; lander.vy = 0; lander.fuel = 100;
           }
-        } else if (lander.y > 270 || lander.x < 0 || lander.x > canvas.width) {
+        } else if (lander.y > 270 || lander.x < 0 || lander.x > 380) {
           state.score = 0;
           for (let i = 0; i < 20; i++) {
             state.particles.push({
@@ -2356,7 +2381,7 @@ export default function DashboardPortfolio() {
             }
           });
 
-          if (proj.y > 280 || proj.x > canvas.width) {
+          if (proj.y > 280 || proj.x > 380) {
             proj.state = "idle";
           }
         }
@@ -2403,8 +2428,9 @@ export default function DashboardPortfolio() {
       ctx.fillStyle = "#ffffff";
       ctx.font = "900 16px Outfit, sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText(`SCORE: ${state.score.toString().padStart(6, "0")}`, canvas.width - 20, 30);
+      ctx.fillText(`SCORE: ${state.score.toString().padStart(6, "0")}`, 380 - 20, 30);
 
+      ctx.restore();
       animId = requestAnimationFrame(frame);
     };
 
@@ -2543,12 +2569,14 @@ export default function DashboardPortfolio() {
                   <div className="flex justify-center p-4 bg-slate-950/90 relative">
                     <canvas
                       ref={modalCanvasRef}
-                      width={380}
-                      height={300}
-                      className="bg-slate-950 border border-white/5 rounded-xl w-full max-w-[420px] aspect-[1.26/1] cursor-pointer"
+                      width={760}
+                      height={600}
+                      className="bg-slate-950 border border-white/5 rounded-xl w-full max-w-[420px] aspect-[1.26/1] cursor-pointer pixelated"
                     />
+                    <div className="crt-scanlines"></div>
+                    <div className="crt-vignette"></div>
                     {activeGame.playable && (
-                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-white/10 px-4 py-1.5 rounded-full text-[10px] text-slate-400 font-bold uppercase tracking-wider pointer-events-none backdrop-blur shadow-lg">
+                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-white/10 px-4 py-1.5 rounded-full text-[10px] text-slate-400 font-bold uppercase tracking-wider pointer-events-none backdrop-blur shadow-lg z-20">
                         🎮 Drag Mouse / Click inside Viewport to Play
                       </div>
                     )}
