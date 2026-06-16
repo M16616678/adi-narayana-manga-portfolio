@@ -56,3 +56,39 @@ body {
   border-color: rgba(162, 57, 238, 0.3);
 }
 
+/* Premium Pro UI Additions */
+html {
+  scroll-behavior: smooth;
+}
+
+.crt-text {
+  text-shadow: 0 0 5px rgba(52, 211, 153, 0.5);
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.985; }
+  25% { opacity: 0.995; }
+  50% { opacity: 0.98; }
+  75% { opacity: 1; }
+  100% { opacity: 0.985; }
+}
+
+.crt-screen {
+  animation: crt-flicker 0.2s infinite;
+}
+
+.pro-card-glow {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.pro-card-glow:hover {
+  box-shadow: 0 10px 30px -10px rgba(124, 108, 255, 0.35);
+  border-color: rgba(124, 108, 255, 0.5);
+  transform: translateY(-4px);
+}
+
+.pro-btn-glow:hover {
+  box-shadow: 0 0 15px rgba(255, 178, 62, 0.4);
+}
+
+

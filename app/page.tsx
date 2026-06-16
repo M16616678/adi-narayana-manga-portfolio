@@ -176,7 +176,7 @@ export default function Home() {
           </div>
 
           {/* Right Interactive Console Terminal: 5 Columns */}
-          <div className="lg:col-span-5 flex flex-col bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] min-h-[260px] relative group">
+          <div className="lg:col-span-5 flex flex-col bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] min-h-[260px] relative group crt-screen">
             {/* CRT scanline simulation overlay */}
             <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/[0.015] to-transparent opacity-60"></div>
             
@@ -191,7 +191,7 @@ export default function Home() {
             </div>
 
             {/* Terminal Logs Output Scrollbar */}
-            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-emerald-400 flex flex-col gap-1.5 max-h-[160px] selection:bg-emerald-800 selection:text-white">
+            <div className="flex-1 p-4 overflow-y-auto font-mono text-[10px] text-emerald-400 crt-text flex flex-col gap-1.5 max-h-[160px] selection:bg-emerald-800 selection:text-white">
               {terminalLogs.map((log, index) => (
                 <div key={index} className="whitespace-pre-wrap leading-relaxed">
                   {log}
@@ -269,7 +269,7 @@ export default function Home() {
         <section id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-t border-white/10 pt-12 items-stretch">
           
           {/* Left: Player Card (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col bg-gradient-to-br from-[#241F4B]/60 to-[#1B1838]/60 border border-[#332C5E] rounded-3xl p-6 relative overflow-hidden backdrop-blur-md justify-between shadow-lg">
+          <div className="lg:col-span-7 flex flex-col bg-gradient-to-br from-[#241F4B]/60 to-[#1B1838]/60 border border-[#332C5E] rounded-3xl p-6 relative overflow-hidden backdrop-blur-md justify-between shadow-lg pro-card-glow hover:translate-y-0">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(circle,rgba(255,178,62,0.12)_0%,transparent_70%)] pointer-events-none"></div>
             
             <div>
@@ -335,7 +335,7 @@ export default function Home() {
           {/* Right: Code Block & Day Job Note (5 cols) */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             {/* Syntax Highlighted Lua Box */}
-            <div className="code bg-[#0e0c22] border border-[#332C5E] rounded-3xl p-5 overflow-hidden shadow-inner">
+            <div className="code bg-[#0e0c22] border border-[#332C5E] rounded-3xl p-5 overflow-hidden shadow-inner pro-card-glow hover:translate-y-0">
               <div className="cbar flex gap-1.5 mb-4">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#FF6B57]"></span>
                 <span className="h-2.5 w-2.5 rounded-full bg-[#FFB23E]"></span>
@@ -356,7 +356,7 @@ export default function Home() {
             </div>
 
             {/* Day Job Note */}
-            <div className="note bg-[#1B1838] border border-[#332C5E] rounded-3xl p-5 shadow-sm flex-1 flex flex-col justify-center">
+            <div className="note bg-[#1B1838] border border-[#332C5E] rounded-3xl p-5 shadow-sm flex-1 flex flex-col justify-center pro-card-glow hover:translate-y-0">
               <h4 className="text-white font-bold text-sm tracking-tight mb-2 flex items-center gap-2">
                 <span>🌗</span> Beyond games, the day job
               </h4>
@@ -468,7 +468,7 @@ export default function Home() {
             ].map((skill, idx) => (
               <div 
                 key={idx} 
-                className="skill bg-[#1B1838]/60 border border-[#332C5E] rounded-2xl p-4 shadow-sm hover:border-[#FFB23E] hover:-translate-y-1 transition-all duration-300"
+                className="skill bg-[#1B1838]/60 border border-[#332C5E] rounded-2xl p-4 shadow-sm pro-card-glow cursor-default"
               >
                 <div className="sn text-white font-bold text-sm tracking-tight">{skill.n}</div>
                 <div className="sd font-mono text-[10px] text-slate-400 uppercase tracking-wider mt-1">{skill.d}</div>
