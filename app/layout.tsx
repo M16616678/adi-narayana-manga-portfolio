@@ -30,6 +30,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#E5A93B" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
+                    console.log('ServiceWorker registered');
+                  }, function(err) {
+                    console.log('ServiceWorker failed: ', err);
+                  });
+                });
+              }
+            `
+          }}
+        />
+      </head>
       <body
         className={`${playfair.variable} ${outfit.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#050507] text-[#e2e8f0] min-h-screen`}
       >

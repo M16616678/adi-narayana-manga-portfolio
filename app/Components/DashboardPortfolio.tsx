@@ -532,6 +532,119 @@ export default function DashboardPortfolio() {
   
   const [score, setScore] = useState<number>(0);
 
+  // PWA Install State
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  // Level Designer State
+  const [modalTab, setModalTab] = useState<"tuning" | "editor">("tuning");
+  const [gridCols, setGridCols] = useState(7);
+  const [gridRows, setGridRows] = useState(4);
+  const [gridCells, setGridCells] = useState<number[]>([]);
+  const [useCustomGrid, setUseCustomGrid] = useState(false);
+  const [customGridTrigger, setCustomGridTrigger] = useState(0);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [editorTool, setEditorTool] = useState<number>(1); // 1 = Draw/Wall, 0 = Erase, 2 = Pellet (for Maze Muncher)
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to install prompt: ${outcome}`);
+    setDeferredPrompt(null);
+  };
+
+  // Initialize/reset customizable grid on game swap
+  useEffect(() => {
+    if (!activeGame) {
+      setUseCustomGrid(false);
+      setGridCells([]);
+      return;
+    }
+
+    const isCustomizable = ["neon_breaker", "snake_lua", "maze_muncher"].includes(activeGame.id);
+    setModalTab("tuning"); // Reset back to tuning tab
+    if (!isCustomizable) {
+      setUseCustomGrid(false);
+      setGridCells([]);
+      return;
+    }
+
+    let cols = 7;
+    let rows = 4;
+    if (activeGame.id === "snake_lua") {
+      cols = 35;
+      rows = 27;
+    } else if (activeGame.id === "maze_muncher") {
+      cols = 26;
+      rows = 20;
+    }
+
+    setGridCols(cols);
+    setGridRows(rows);
+
+    let initialCells = Array(cols * rows).fill(0);
+    if (activeGame.id === "neon_breaker") {
+      initialCells = Array(cols * rows).fill(1); // Bricks start as active
+    } else if (activeGame.id === "maze_muncher") {
+      // Border walls pre-populated
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (x === 0 || y === 0 || x === cols - 1 || y === rows - 1) {
+            initialCells[y * cols + x] = 1;
+          }
+        }
+      }
+    }
+
+    setGridCells(initialCells);
+    setUseCustomGrid(false);
+    setEditorTool(1); // Default tool to Wall/Draw
+  }, [activeGame]);
+
+  useEffect(() => {
+    const handleMouseUp = () => setIsDrawing(false);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => window.removeEventListener("mouseup", handleMouseUp);
+  }, []);
+
+  const handleCellMouseDown = (index: number) => {
+    setIsDrawing(true);
+    updateCell(index);
+  };
+
+  const handleCellMouseEnter = (index: number) => {
+    if (isDrawing) {
+      updateCell(index);
+    }
+  };
+
+  const updateCell = (index: number) => {
+    setGridCells((prev) => {
+      const copy = [...prev];
+      if (activeGame?.id === "maze_muncher") {
+        // Don't allow changing borders for maze
+        const x = index % gridCols;
+        const y = Math.floor(index / gridCols);
+        if (x === 0 || y === 0 || x === gridCols - 1 || y === gridRows - 1) {
+          return prev;
+        }
+      }
+      copy[index] = editorTool;
+      return copy;
+    });
+  };
+
   // Playable modal game loop using unified game engine
   useEffect(() => {
     if (!activeGame) return;
@@ -554,6 +667,7 @@ export default function DashboardPortfolio() {
       },
       speedSetting,
       gravitySetting,
+      customGrid: useCustomGrid ? gridCells : undefined,
       onScoreChange: (newScore: number) => {
         setScore(newScore);
       }
@@ -578,7 +692,7 @@ export default function DashboardPortfolio() {
       cancelAnimationFrame(animId);
       instance.destroy();
     };
-  }, [activeGame, speedSetting, gravitySetting]);
+  }, [activeGame, speedSetting, gravitySetting, useCustomGrid, customGridTrigger]);
 
   // Filter game list matching pill selections
   const filteredGames = GAME_BUILDS.filter((g) => {
@@ -629,7 +743,17 @@ export default function DashboardPortfolio() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <span className="text-xs font-bold text-[#406E8E] uppercase tracking-wider">▚ THE LIBRARY</span>
-            <h3 className="text-2xl font-black text-white mt-0.5">16 Solar2D builds, live in your browser</h3>
+            <h3 className="text-2xl font-black text-white mt-0.5 flex flex-wrap items-center gap-3">
+              <span>16 Solar2D builds, live in your browser</span>
+              {deferredPrompt && (
+                <button
+                  onClick={handleInstallClick}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#E5A93B]/10 hover:bg-[#E5A93B]/20 text-[#E5A93B] border border-[#E5A93B]/30 rounded-full text-[10px] font-black uppercase tracking-wider transition-all animate-pulse shadow-[0_0_15px_rgba(229,169,59,0.1)] cursor-pointer"
+                >
+                  📥 INSTALL ARCADE APP
+                </button>
+              )}
+            </h3>
             <p className="text-xs text-slate-400 mt-1 leading-relaxed">
               Each card is an actual running preview. Hover over any card to run the physics animation loop, and click to play inside the active console.
             </p>
@@ -703,12 +827,13 @@ export default function DashboardPortfolio() {
                     <span>Score multiplier: {speedSetting.toFixed(1)}x</span>
                   </div>
 
-                  <div className="flex justify-center p-4 bg-slate-950/90 relative">
+                  <div className="flex justify-center p-4 bg-slate-950/90 relative overflow-x-auto w-full">
                     <canvas
                       ref={modalCanvasRef}
                       width={760}
                       height={600}
-                      className="bg-slate-950 border border-white/5 rounded-xl w-full max-w-[420px] aspect-[1.26/1] cursor-pointer pixelated"
+                      className="bg-slate-950 border border-white/5 rounded-xl cursor-pointer pixelated"
+                      style={{ width: "420px", height: "333px", minWidth: "420px" }}
                     />
                     <div className="crt-scanlines"></div>
                     <div className="crt-vignette"></div>
@@ -738,42 +863,203 @@ export default function DashboardPortfolio() {
               {/* Code Inspector & Sliders: 5 Columns */}
               <div className="lg:col-span-5 flex flex-col gap-4">
                 
-                {/* Sliders Panel */}
-                <div className="card bg-[#161c2d]/40 border border-white/[0.08] p-5 rounded-2xl flex flex-col gap-4">
-                  <span className="text-[10px] font-bold text-[#406E8E] uppercase tracking-wider">⚙️ Lua Physics Tuning variables</span>
-                  
-                  <div className="flex flex-col gap-3">
-                    <div className="flex justify-between text-[10px] font-bold font-mono">
-                      <span className="text-slate-400">Impulse Vector (speed)</span>
-                      <span className="text-indigo-400">{speedSetting.toFixed(1)}f</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="1.0"
-                      max="10.0"
-                      step="0.5"
-                      value={speedSetting}
-                      onChange={(e) => setSpeedSetting(parseFloat(e.target.value))}
-                      className="range range-xs range-primary"
-                    />
+                {/* Tab selector for Customizable games */}
+                {["neon_breaker", "snake_lua", "maze_muncher"].includes(activeGame.id) && (
+                  <div className="flex border-b border-white/10 text-xs font-bold font-mono">
+                    <button
+                      onClick={() => setModalTab("tuning")}
+                      className={`flex-1 pb-2 text-center uppercase tracking-wider transition-colors border-b-2 ${
+                        modalTab === "tuning"
+                          ? "text-[#E5A93B] border-[#E5A93B]"
+                          : "text-slate-500 border-transparent hover:text-slate-300"
+                      }`}
+                    >
+                      ⚙️ Physics Tuning
+                    </button>
+                    <button
+                      onClick={() => setModalTab("editor")}
+                      className={`flex-1 pb-2 text-center uppercase tracking-wider transition-colors border-b-2 ${
+                        modalTab === "editor"
+                          ? "text-[#E5A93B] border-[#E5A93B]"
+                          : "text-slate-500 border-transparent hover:text-slate-300"
+                      }`}
+                    >
+                      🎨 Level Designer
+                    </button>
                   </div>
+                )}
 
-                  <div className="flex flex-col gap-3">
-                    <div className="flex justify-between text-[10px] font-bold font-mono">
-                      <span className="text-slate-400">Box2D gravity.y</span>
-                      <span className="text-indigo-400">{gravitySetting.toFixed(2)}g</span>
+                {modalTab === "tuning" ? (
+                  <>
+                    {/* Sliders Panel */}
+                    <div className="card bg-[#161c2d]/40 border border-white/[0.08] p-5 rounded-2xl flex flex-col gap-4">
+                      <span className="text-[10px] font-bold text-[#406E8E] uppercase tracking-wider">⚙️ Lua Physics Tuning variables</span>
+                      
+                      <div className="flex flex-col gap-3">
+                        <div className="flex justify-between text-[10px] font-bold font-mono">
+                          <span className="text-slate-400">Impulse Vector (speed)</span>
+                          <span className="text-indigo-400">{speedSetting.toFixed(1)}f</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="1.0"
+                          max="10.0"
+                          step="0.5"
+                          value={speedSetting}
+                          onChange={(e) => setSpeedSetting(parseFloat(e.target.value))}
+                          className="range range-xs range-primary"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        <div className="flex justify-between text-[10px] font-bold font-mono">
+                          <span className="text-slate-400">Box2D gravity.y</span>
+                          <span className="text-indigo-400">{gravitySetting.toFixed(2)}g</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0.1"
+                          max="1.5"
+                          step="0.05"
+                          value={gravitySetting}
+                          onChange={(e) => setGravitySetting(parseFloat(e.target.value))}
+                          className="range range-xs range-primary"
+                        />
+                      </div>
                     </div>
-                    <input
-                      type="range"
-                      min="0.1"
-                      max="1.5"
-                      step="0.05"
-                      value={gravitySetting}
-                      onChange={(e) => setGravitySetting(parseFloat(e.target.value))}
-                      className="range range-xs range-primary"
-                    />
+                  </>
+                ) : (
+                  /* Level Designer Editor Panel */
+                  <div className="card bg-[#161c2d]/40 border border-white/[0.08] p-5 rounded-2xl flex flex-col gap-4 select-none">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] font-bold text-[#406E8E] uppercase tracking-wider">🎨 Grid Painter</span>
+                      <p className="text-[10px] text-slate-400 leading-normal font-sans">
+                        {activeGame.id === "neon_breaker" && "Draw/erase bricks that the ball will smash."}
+                        {activeGame.id === "snake_lua" && "Draw wall obstacles that the AI snake must dodge."}
+                        {activeGame.id === "maze_muncher" && "Paint custom maze walls and pellets for Pac-Man."}
+                      </p>
+                    </div>
+
+                    {/* Paint Tools bar */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEditorTool(1)}
+                        className={`px-3 py-1 rounded text-[10px] font-mono font-bold uppercase transition-all ${
+                          editorTool === 1
+                            ? "bg-[#E5A93B] text-[#050507]"
+                            : "bg-slate-900 border border-white/10 text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        🧱 Wall / Draw
+                      </button>
+                      {activeGame.id === "maze_muncher" && (
+                        <button
+                          onClick={() => setEditorTool(2)}
+                          className={`px-3 py-1 rounded text-[10px] font-mono font-bold uppercase transition-all ${
+                            editorTool === 2
+                              ? "bg-amber-500 text-white"
+                              : "bg-slate-900 border border-white/10 text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          🟡 Pellet
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setEditorTool(0)}
+                        className={`px-3 py-1 rounded text-[10px] font-mono font-bold uppercase transition-all ${
+                          editorTool === 0
+                            ? "bg-red-500/20 text-red-400 border border-red-500/40"
+                            : "bg-slate-900 border border-white/10 text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        🧹 Erase
+                      </button>
+                    </div>
+
+                    {/* Paint Grid Element */}
+                    <div
+                      className="grid select-none bg-slate-950/80 border border-white/10 p-2 rounded-xl mx-auto cursor-crosshair overflow-hidden"
+                      style={{
+                        gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
+                        width: "100%",
+                        maxWidth: `${gridCols * (activeGame.id === "neon_breaker" ? 40 : activeGame.id === "snake_lua" ? 10 : 13)}px`,
+                        gap: "1px",
+                      }}
+                      onMouseLeave={() => setIsDrawing(false)}
+                    >
+                      {gridCells.map((val, idx) => {
+                        let cellBg = "bg-slate-950/40 border border-white/[0.03]";
+                        let isCustomStyle = false;
+
+                        if (activeGame.id === "neon_breaker" && val === 1) {
+                          isCustomStyle = true;
+                        } else if (activeGame.id === "snake_lua" && val === 1) {
+                          cellBg = "bg-[#332C5E] border border-[#7C6CFF]/30 shadow-inner";
+                        } else if (activeGame.id === "maze_muncher") {
+                          if (val === 1) {
+                            cellBg = "bg-[#332C5E] border border-[#7C6CFF]/30 shadow-inner";
+                          }
+                        }
+
+                        return (
+                          <div
+                            key={idx}
+                            onMouseDown={() => handleCellMouseDown(idx)}
+                            onMouseEnter={() => handleCellMouseEnter(idx)}
+                            className={`aspect-square transition-all duration-100 relative ${cellBg}`}
+                            style={{
+                              backgroundColor: isCustomStyle
+                                ? [C.coral, C.sun, C.green, C.moon][Math.floor(idx / gridCols) % 4]
+                                : undefined,
+                            }}
+                          >
+                            {activeGame.id === "maze_muncher" && val === 2 && (
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#E5A93B] shadow-[0_0_8px_#E5A93B]" />
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Grid controls */}
+                    <div className="flex gap-3 mt-1">
+                      <button
+                        onClick={() => {
+                          setUseCustomGrid(true);
+                          setCustomGridTrigger((prev) => prev + 1);
+                        }}
+                        className="flex-1 bg-[#E5A93B] hover:bg-[#ffc266] text-[#050507] font-black uppercase text-[10px] py-2.5 rounded tracking-wider transition-colors font-mono cursor-pointer text-center"
+                      >
+                        🚀 RUN CUSTOM LEVEL
+                      </button>
+                      <button
+                        onClick={() => {
+                          setUseCustomGrid(false);
+                          setCustomGridTrigger((prev) => prev + 1);
+                          // Reset editor grid cells too
+                          let initialCells = Array(gridCols * gridRows).fill(0);
+                          if (activeGame.id === "neon_breaker") {
+                            initialCells = Array(gridCols * gridRows).fill(1);
+                          } else if (activeGame.id === "maze_muncher") {
+                            for (let y = 0; y < gridRows; y++) {
+                              for (let x = 0; x < gridCols; x++) {
+                                if (x === 0 || y === 0 || x === gridCols - 1 || y === gridRows - 1) {
+                                  initialCells[y * gridCols + x] = 1;
+                                }
+                              }
+                            }
+                          }
+                          setGridCells(initialCells);
+                        }}
+                        className="border border-white/10 hover:border-slate-400 bg-white/5 hover:bg-white/10 text-slate-300 font-bold uppercase text-[10px] py-2.5 px-4 rounded tracking-wider transition-colors font-mono cursor-pointer"
+                      >
+                        🔄 RESET LEVEL
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Lua code viewer */}
                 <div className="card bg-slate-950 border border-white/5 p-4 rounded-2xl flex-1 flex flex-col gap-2 font-mono text-[10px] text-slate-300 leading-relaxed overflow-hidden">

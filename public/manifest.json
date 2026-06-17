@@ -1,0 +1,24 @@
+{
+  "name": "Adi Narayana Manga - Solar2D Game Developer Portfolio",
+  "short_name": "Adi Manga",
+  "description": "2D game development portfolio built with Solar2D and Lua. 16 game prototypes, 2024 to present.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#060608",
+  "theme_color": "#E5A93B",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon_arcade_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon_arcade_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

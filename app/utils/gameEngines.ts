@@ -1,5 +1,7 @@
 // app/utils/gameEngines.ts
 
+import { playRetroSound } from "@/app/utils/soundSynth";
+
 export interface GameEnv {
   t: number;
   pointer: {
@@ -11,6 +13,7 @@ export interface GameEnv {
   };
   speedSetting?: number;
   gravitySetting?: number;
+  customGrid?: any[];
   onScoreChange?: (score: number) => void;
 }
 
@@ -232,7 +235,6 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
         ship.x = clamp(ship.x, 0, w);
       },
       step(dt) {
-        // Handle responsive width & height based on canvas drawing box
         w = ctx.canvas.width / (Math.min(window.devicePixelRatio || 1, 2));
         h = ctx.canvas.height / (Math.min(window.devicePixelRatio || 1, 2));
 
@@ -242,7 +244,6 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
           spawn = rnd(0.4, 0.85);
         }
 
-        // Pointer controls vs Attract Mode AI
         if (env.pointer.active) {
           ship.tx = env.pointer.x;
         } else {
@@ -261,7 +262,6 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
         }
         ship.x = lerp(ship.x, clamp(ship.tx, 18, w - 18), 0.18);
 
-        // Update falling stars/bombs
         for (let i = falls.length - 1; i >= 0; i--) {
           const f = falls[i];
           f.y += f.v * dt;
@@ -275,9 +275,11 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
               shake = 10;
               score = Math.max(0, score - 25);
               parts.burst(f.x, f.y, C.coral, 16, 180);
+              playRetroSound('hit');
             } else {
               score += 10;
               parts.burst(f.x, f.y, C.sun, 12, 150);
+              playRetroSound('coin');
             }
             falls.splice(i, 1);
             if (onScoreChange) onScoreChange(score);
@@ -286,7 +288,6 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
 
         parts.step(dt);
 
-        // Rendering code
         bg(ctx, w, h, '#1a1640', '#0d0b22');
         drawStarfield(ctx, field, w, h, env.t, 18 * dt * 60);
 
@@ -326,7 +327,6 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
           }
         }
 
-        // Render player ship
         ctx.save();
         ctx.translate(ship.x, h - 30);
         ctx.fillStyle = C.star;
@@ -343,7 +343,6 @@ export function StarCatcher(opts?: { onScoreChange?: (score: number) => void }):
         ctx.arc(0, -2, 4, 0, TAU);
         ctx.fill();
 
-        // Thruster flame
         ctx.fillStyle = C.coral;
         ctx.globalAlpha = 0.7 + 0.3 * Math.sin(env.t * 30);
         ctx.beginPath();
@@ -414,6 +413,7 @@ export function AstroBlaster(): GameFactory {
         if (fire <= 0) {
           bullets.push({ x: ship.x, y: h - 30 });
           fire = 0.22 / speedMultiplier;
+          playRetroSound('laser');
         }
 
         for (let i = bullets.length - 1; i >= 0; i--) {
@@ -437,6 +437,7 @@ export function AstroBlaster(): GameFactory {
               rocks.splice(i, 1);
               bullets.splice(j, 1);
               score += 10;
+              playRetroSound('hit');
               if (env.onScoreChange) env.onScoreChange(score);
               break;
             }
@@ -512,8 +513,11 @@ export function BrickBreaker(): GameFactory {
       bricks = [];
       const bw = (w - 16) / cols;
       const bh = 12;
+      const isCustom = env.customGrid && env.customGrid.length === rows * cols;
+      
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
+          if (isCustom && !env.customGrid![r * cols + c]) continue;
           bricks.push({
             x: 8 + c * bw,
             y: 14 + r * (bh + 5),
@@ -551,18 +555,22 @@ export function BrickBreaker(): GameFactory {
         if (ball.x < ball.r) {
           ball.x = ball.r;
           ball.vx *= -1;
+          playRetroSound('select');
         }
         if (ball.x > w - ball.r) {
           ball.x = w - ball.r;
           ball.vx *= -1;
+          playRetroSound('select');
         }
         if (ball.y < ball.r) {
           ball.y = ball.r;
           ball.vy *= -1;
+          playRetroSound('select');
         }
         if (ball.y > h - 22 && ball.y < h - 14 && Math.abs(ball.x - pad.x) < pad.wd / 2 + ball.r && ball.vy > 0) {
           ball.vy *= -1;
           ball.vx += (ball.x - pad.x) * 2;
+          playRetroSound('select');
         }
         if (ball.y > h + 12) newBall();
 
@@ -578,12 +586,13 @@ export function BrickBreaker(): GameFactory {
             ball.vy *= -1;
             parts.burst(ball.x, ball.y, b.c, 10, 140);
             score += 10;
+            playRetroSound('coin');
             if (env.onScoreChange) env.onScoreChange(score);
             break;
           }
         }
 
-        if (bricks.every((b) => !b.alive)) build();
+        if (bricks.length > 0 && bricks.every((b) => !b.alive)) build();
 
         parts.step(dt);
 
@@ -624,7 +633,14 @@ export function Snake(): GameFactory {
     let score = 0;
 
     function spawnFood() {
-      food = { x: ri(0, cols - 1), y: ri(0, rows - 1) };
+      // Find a safe spot free from obstacles/walls
+      let spot = { x: ri(0, cols - 1), y: ri(0, rows - 1) };
+      let attempts = 0;
+      while (attempts < 100 && env.customGrid && env.customGrid[spot.y * cols + spot.x]) {
+        spot = { x: ri(0, cols - 1), y: ri(0, rows - 1) };
+        attempts++;
+      }
+      food = spot;
     }
 
     function reset() {
@@ -659,6 +675,7 @@ export function Snake(): GameFactory {
         const ny = head.y + o.y;
         if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
         if (snake.some((s) => s.x === nx && s.y === ny)) continue;
+        if (env.customGrid && env.customGrid[ny * cols + nx]) continue;
         return o;
       }
       return dir;
@@ -681,19 +698,23 @@ export function Snake(): GameFactory {
           const head = snake[0];
           const nx = head.x + dir.x;
           const ny = head.y + dir.y;
+          const isHitObstacle = env.customGrid && env.customGrid[ny * cols + nx];
           if (
             nx < 0 ||
             ny < 0 ||
             nx >= cols ||
             ny >= rows ||
-            snake.some((s) => s.x === nx && s.y === ny)
+            snake.some((s) => s.x === nx && s.y === ny) ||
+            isHitObstacle
           ) {
             reset();
+            playRetroSound('lose');
           } else {
             snake.unshift({ x: nx, y: ny });
             if (nx === food.x && ny === food.y) {
               spawnFood();
               score += 50;
+              playRetroSound('coin');
               if (env.onScoreChange) env.onScoreChange(score);
             } else {
               snake.pop();
@@ -717,6 +738,19 @@ export function Snake(): GameFactory {
           ctx.stroke();
         }
         ctx.globalAlpha = 1;
+
+        // Draw custom obstacles
+        if (env.customGrid) {
+          ctx.fillStyle = '#2c274a';
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              if (env.customGrid[y * cols + x]) {
+                rr(ctx, x * cell + 1, y * cell + 1, cell - 2, cell - 2, 2);
+                ctx.fill();
+              }
+            }
+          }
+        }
 
         ctx.fillStyle = C.coral;
         starPath(ctx, food.x * cell + cell / 2, food.y * cell + cell / 2, cell * 0.4, 5, 0.5);
@@ -756,6 +790,7 @@ export function TapHopper(): GameFactory {
     function flap() {
       const speedMultiplier = env.speedSetting ? env.speedSetting / 4.0 : 1.0;
       bird.vy = -150 * speedMultiplier;
+      playRetroSound('jump');
     }
 
     return {
@@ -798,14 +833,21 @@ export function TapHopper(): GameFactory {
           if (!p.passed && p.x < 46) {
             p.passed = true;
             score += 10;
+            playRetroSound('coin');
             if (env.onScoreChange) env.onScoreChange(score);
           }
           if (p.x < 60 && p.x > 20) {
-            if (bird.y < p.gy - gap / 2 || bird.y > p.gy + gap / 2) reset();
+            if (bird.y < p.gy - gap / 2 || bird.y > p.gy + gap / 2) {
+              reset();
+              playRetroSound('lose');
+            }
           }
         }
 
-        if (bird.y > h - 6 || bird.y < 6) reset();
+        if (bird.y > h - 6 || bird.y < 6) {
+          reset();
+          playRetroSound('lose');
+        }
 
         bg(ctx, w, h, '#1c2247', '#10142e');
 
@@ -908,6 +950,7 @@ export function Platformer(): GameFactory {
         }
         if (near && hero.onG && near.x - hero.x < 46) {
           hero.vy = -340 * (env.gravitySetting ? Math.sqrt(env.gravitySetting / 0.6) : 1.0);
+          playRetroSound('jump');
         }
 
         for (let i = obst.length - 1; i >= 0; i--) {
@@ -926,6 +969,7 @@ export function Platformer(): GameFactory {
             c.got = true;
             coins.splice(i, 1);
             score += 20;
+            playRetroSound('coin');
             if (env.onScoreChange) env.onScoreChange(score);
           }
         }
@@ -1044,6 +1088,7 @@ export function GemMatch(): GameFactory {
         if (timer <= 0) {
           if (clearLine()) {
             score += 30;
+            playRetroSound('win');
             if (env.onScoreChange) env.onScoreChange(score);
           }
           timer = 1.1 / speedMultiplier;
@@ -1137,6 +1182,7 @@ export function BubblePop(): GameFactory {
             vy: -300 * speedMultiplier,
             c: shotC
           };
+          playRetroSound('laser');
         }
       },
       step(dt) {
@@ -1144,7 +1190,6 @@ export function BubblePop(): GameFactory {
         ang = Math.sin(env.t * 0.9) * 0.7;
         fire -= dt;
 
-        // Attract mode auto fire
         if (!env.pointer.active && !shot && fire <= 0) {
           shot = {
             x: w / 2,
@@ -1153,6 +1198,7 @@ export function BubblePop(): GameFactory {
             vy: -300 * speedMultiplier,
             c: shotC
           };
+          playRetroSound('laser');
         }
 
         if (shot) {
@@ -1182,6 +1228,7 @@ export function BubblePop(): GameFactory {
             }
             if (popCount > 0) {
               score += popCount * 10;
+              playRetroSound('coin');
               if (env.onScoreChange) env.onScoreChange(score);
             }
             shot = null;
@@ -1323,6 +1370,7 @@ export function TowerSiege(): GameFactory {
               const p = posAt(tg.d);
               shots.push({ x: t.x, y: t.y, tx: p.x, ty: p.y, e: tg, life: 0.18 });
               t.cd = 0.6 / speedMultiplier;
+              playRetroSound('select');
             }
           }
         }
@@ -1335,10 +1383,12 @@ export function TowerSiege(): GameFactory {
               s.e.hp--;
               const p = posAt(s.e.d);
               parts.burst(p.x, p.y, C.sun, 6, 90);
+              playRetroSound('select');
               if (s.e.hp <= 0) {
                 enemies.splice(enemies.indexOf(s.e), 1);
                 parts.burst(p.x, p.y, C.coral, 12, 150);
                 score += 50;
+                playRetroSound('hit');
                 if (env.onScoreChange) env.onScoreChange(score);
               }
             }
@@ -1421,24 +1471,39 @@ export function MazeRunner(): GameFactory {
     function gen() {
       cols = Math.floor(w / cell);
       rows = Math.floor(h / cell);
-      maze = [];
-      for (let y = 0; y < rows; y++) {
-        maze[y] = [];
-        for (let x = 0; x < cols; x++) {
-          maze[y][x] =
-            x === 0 ||
-            y === 0 ||
-            x === cols - 1 ||
-            y === rows - 1 ||
-            (x % 2 === 0 && y % 2 === 0 && Math.random() < 0.7)
-              ? 1
-              : 0;
+      const isCustom = env.customGrid && env.customGrid.length === rows * cols;
+
+      if (isCustom) {
+        maze = [];
+        pellets = [];
+        for (let y = 0; y < rows; y++) {
+          maze[y] = [];
+          for (let x = 0; x < cols; x++) {
+            const val = env.customGrid![y * cols + x];
+            maze[y][x] = val === 1 ? 1 : 0;
+            if (val === 2) pellets.push({ x, y });
+          }
         }
-      }
-      pellets = [];
-      for (let y = 1; y < rows - 1; y++) {
-        for (let x = 1; x < cols - 1; x++) {
-          if (maze[y][x] === 0 && Math.random() < 0.5) pellets.push({ x, y });
+      } else {
+        maze = [];
+        for (let y = 0; y < rows; y++) {
+          maze[y] = [];
+          for (let x = 0; x < cols; x++) {
+            maze[y][x] =
+              x === 0 ||
+              y === 0 ||
+              x === cols - 1 ||
+              y === rows - 1 ||
+              (x % 2 === 0 && y % 2 === 0 && Math.random() < 0.7)
+                ? 1
+                : 0;
+          }
+        }
+        pellets = [];
+        for (let y = 1; y < rows - 1; y++) {
+          for (let x = 1; x < cols - 1; x++) {
+            if (maze[y][x] === 0 && Math.random() < 0.5) pellets.push({ x, y });
+          }
         }
       }
       player = { x: 1, y: 1, px: 1, py: 1 };
@@ -1499,10 +1564,17 @@ export function MazeRunner(): GameFactory {
             if (pellets[i].x === player.x && pellets[i].y === player.y) {
               pellets.splice(i, 1);
               score += 10;
+              playRetroSound('select');
               if (env.onScoreChange) env.onScoreChange(score);
             }
           }
-          if (!pellets.length || (player.x === ghost.x && player.y === ghost.y)) gen();
+          if (player.x === ghost.x && player.y === ghost.y) {
+            gen();
+            playRetroSound('lose');
+          } else if (!pellets.length) {
+            gen();
+            playRetroSound('win');
+          }
         }
 
         const a = tick / sp;
@@ -1596,7 +1668,6 @@ export function SkyRacer(): GameFactory {
           spawn = rnd(0.6, 1.1) / speedMultiplier;
         }
 
-        // Safe lane calculation
         const danger = [0, 0, 0];
         for (const t of traffic) {
           if (t.y > h * 0.3 && t.y < h * 0.9) danger[t.lane] += 1;
@@ -1625,6 +1696,7 @@ export function SkyRacer(): GameFactory {
           if (traffic[i].y > h + 30) {
             traffic.splice(i, 1);
             score += 10;
+            playRetroSound('coin');
             if (env.onScoreChange) env.onScoreChange(score);
           }
         }
@@ -1749,12 +1821,18 @@ export function Lander(): GameFactory {
           parts.burst(ship.x, gy, C.sun, 14, 120);
           if (ship.vy < 35 && Math.abs(ship.vx) < 15) {
             score += 100;
+            playRetroSound('win');
             if (env.onScoreChange) env.onScoreChange(score);
+          } else {
+            playRetroSound('lose');
           }
           reset();
         }
 
-        if (thrust && Math.random() < 0.7) parts.burst(ship.x, ship.y + 10, C.coral, 2, 80);
+        if (thrust && Math.random() < 0.7) {
+          parts.burst(ship.x, ship.y + 10, C.coral, 2, 80);
+          playRetroSound('laser');
+        }
 
         parts.step(dt);
 
@@ -1878,6 +1956,7 @@ export function CardClash(): GameFactory {
       tap() {
         if (phase === 2) {
           deal();
+          playRetroSound('select');
         }
       },
       step(dt) {
@@ -1893,11 +1972,13 @@ export function CardClash(): GameFactory {
             winner = left.v > right.v ? -1 : left.v < right.v ? 1 : 0;
             if (winner === -1) {
               score += 50;
+              playRetroSound('win');
               if (env.onScoreChange) env.onScoreChange(score);
+            } else {
+              playRetroSound('lose');
             }
           }
         } else if (phase === 2) {
-          // Attract mode auto re-deals
           if (t > 1.3) deal();
         }
 
@@ -1973,7 +2054,6 @@ export function Whack(): GameFactory {
         init();
       },
       tap(x, y) {
-        // Hammer hits coordinates on mouse click
         hammer.x = x;
         hammer.y = y;
         hammer.sw = 0.1;
@@ -2004,7 +2084,6 @@ export function Whack(): GameFactory {
           }
         }
 
-        // Pointer control override
         if (env.pointer.active) {
           hammer.x = lerp(hammer.x, env.pointer.x, 0.25);
           hammer.y = lerp(hammer.y, env.pointer.y, 0.25);
@@ -2019,13 +2098,13 @@ export function Whack(): GameFactory {
         if (hammer.sw > 0) {
           hammer.sw += dt * 6 * speedMultiplier;
           if (hammer.sw > 1) {
-            // Find if hit
             holes.forEach((o) => {
               if (o.active && Math.hypot(o.x - hammer.x, o.y - hammer.y) < 36) {
                 parts.burst(o.x, o.y - 6, C.sun, 12, 140);
                 o.active = false;
                 o.up = 0;
                 score += 50;
+                playRetroSound('hit');
                 if (env.onScoreChange) env.onScoreChange(score);
               }
             });
@@ -2129,10 +2208,10 @@ export function StarForge(): GameFactory {
         init();
       },
       tap(x, y) {
-        // User connect node on click
         nodes.forEach((n) => {
           if (Math.hypot(n.x - x, n.y - y) < 20) {
             n.connected = true;
+            playRetroSound('select');
           }
         });
       },
@@ -2148,8 +2227,12 @@ export function StarForge(): GameFactory {
           ri2 = (ri2 + 1) % route.length;
           b.connected = true;
           score += 20;
+          playRetroSound('coin');
           if (env.onScoreChange) env.onScoreChange(score);
-          if (ri2 === 0) init();
+          if (ri2 === 0) {
+            init();
+            playRetroSound('win');
+          }
         }
 
         ship.x = lerp(a.x, b.x, prog);
@@ -2186,7 +2269,6 @@ export function StarForge(): GameFactory {
           ctx.fill();
         }
 
-        // Draw player node trace line
         if (env.pointer.active) {
           ctx.strokeStyle = 'rgba(96, 165, 250, 0.5)';
           ctx.lineWidth = 1.5;
@@ -2214,7 +2296,7 @@ export function StarForge(): GameFactory {
   };
 }
 
-// 16. PHYSICS DROP (slingshot)
+// 16. PHYSICS DROP
 export function PhysicsDrop(): GameFactory {
   return function(ctx, w, h, env) {
     let blocks: Array<{ x: number; y: number; w: number; h: number; vx: number; vy: number; c: string; settled: boolean }> = [];
@@ -2261,7 +2343,6 @@ export function PhysicsDrop(): GameFactory {
       },
       tap(x, y) {
         if (phase === 0) {
-          // Shoot in direction of mouse click relative to slingshot center
           const sx = w * 0.16;
           const sy = h - 26;
           const angle = Math.atan2(y - sy, x - sx);
@@ -2275,6 +2356,7 @@ export function PhysicsDrop(): GameFactory {
           };
           phase = 1;
           t = 0;
+          playRetroSound('laser');
         }
       },
       step(dt) {
@@ -2283,7 +2365,6 @@ export function PhysicsDrop(): GameFactory {
         t += dt;
 
         if (phase === 0) {
-          // Attract mode auto launch
           if (!env.pointer.active && t > 0.8) {
             proj = {
               x: w * 0.16,
@@ -2294,6 +2375,7 @@ export function PhysicsDrop(): GameFactory {
             };
             phase = 1;
             t = 0;
+            playRetroSound('laser');
           }
         } else if (phase === 1 && proj) {
           proj.vy += 560 * gravityMultiplier * dt * speedMultiplier;
@@ -2314,6 +2396,7 @@ export function PhysicsDrop(): GameFactory {
               proj.vy *= -0.3;
               parts.burst(proj.x, proj.y, b.c, 8, 110);
               score += 10;
+              playRetroSound('hit');
               if (env.onScoreChange) env.onScoreChange(score);
             }
           }
@@ -2326,7 +2409,6 @@ export function PhysicsDrop(): GameFactory {
           if (t > 1.4) init();
         }
 
-        // Apply physics to toppled blocks
         for (const b of blocks) {
           if (!b.settled) {
             b.vy += 560 * gravityMultiplier * dt * speedMultiplier;
@@ -2347,7 +2429,6 @@ export function PhysicsDrop(): GameFactory {
         ctx.fillStyle = '#2a2350';
         ctx.fillRect(0, h - 12, w, 12);
 
-        // Render slingshot
         ctx.strokeStyle = C.moon;
         ctx.lineWidth = 4;
         ctx.beginPath();
@@ -2355,7 +2436,6 @@ export function PhysicsDrop(): GameFactory {
         ctx.lineTo(w * 0.16, h - 30);
         ctx.stroke();
 
-        // Trajectory guide
         if (phase === 0) {
           ctx.strokeStyle = C.sun;
           ctx.lineWidth = 1.5;
@@ -2395,7 +2475,7 @@ export function PhysicsDrop(): GameFactory {
   };
 }
 
-// Map the Dashboard Portfolio IDs to their Factories
+// Map Dashboard Portfolio IDs to Factories
 export function getGameEngine(id: string): GameFactory | null {
   switch (id) {
     case "star_catcher":
@@ -2435,7 +2515,7 @@ export function getGameEngine(id: string): GameFactory | null {
   }
 }
 
-// Mount and Game Loop Harness for React Canvases
+// Mount and Game Loop Harness supporting Double-Buffered Rendering
 export function mount(
   canvas: HTMLCanvasElement,
   factory: GameFactory,
@@ -2444,6 +2524,10 @@ export function mount(
 ) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
+
+  // Offscreen double-buffered canvases
+  const bufferCanvas = typeof document !== 'undefined' ? document.createElement('canvas') : null;
+  const bufferCtx = bufferCanvas ? bufferCanvas.getContext('2d') : null;
 
   let w = 0;
   let h = 0;
@@ -2465,16 +2549,23 @@ export function mount(
     const r = canvas.getBoundingClientRect();
     w = Math.max(1, Math.round(r.width));
     h = Math.max(1, Math.round(r.height));
+    
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
-    ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    
+    if (bufferCanvas && bufferCtx) {
+      bufferCanvas.width = Math.round(w * dpr);
+      bufferCanvas.height = Math.round(h * dpr);
+      bufferCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    
     if (built && built.resize) built.resize(w, h);
   }
 
   function ensure() {
     if (!built) {
       size();
-      built = factory(ctx!, w, h, env);
+      built = factory(bufferCtx || ctx!, w, h, env);
       if (!w || !h) size();
     }
   }
@@ -2485,7 +2576,6 @@ export function mount(
     const clientX = isTouch ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
     const clientY = isTouch ? (e as TouchEvent).touches[0].clientY : (e as MouseEvent).clientY;
     
-    // Scale client coordinate relative to bounding box and coordinate scaling
     const cx = ((clientX - r.left) / r.width) * w;
     const cy = ((clientY - r.top) / r.height) * h;
     env.pointer.x = cx;
@@ -2522,16 +2612,15 @@ export function mount(
   canvas.addEventListener('touchstart', handlePointerDown as any, { passive: true });
   window.addEventListener('touchend', handlePointerUp);
 
-  // Initial setup
   ensure();
 
   return {
     render(dt: number) {
       ensure();
       
-      // Update environment settings dynamically
       if (envOverride.speedSetting) env.speedSetting = envOverride.speedSetting;
       if (envOverride.gravitySetting) env.gravitySetting = envOverride.gravitySetting;
+      if (envOverride.customGrid) env.customGrid = envOverride.customGrid;
 
       if (env.pointer.active && env.t - env.pointer.lastT > 2.6) {
         env.pointer.active = false;
@@ -2539,8 +2628,14 @@ export function mount(
       env.t += dt;
       try {
         if (built) built.step(dt, w, h);
+        
+        // Copy buffer offscreen onto visible screen (Double-Buffering Blit)
+        if (bufferCanvas && ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(bufferCanvas, 0, 0);
+        }
       } catch (err) {
-        // Suppress errors during resizing/hot-reloads
+        // Suppress errors
       }
     },
     resize() {
